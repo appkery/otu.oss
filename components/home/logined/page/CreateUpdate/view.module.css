@@ -1,0 +1,31 @@
+.diff_result {
+    background-color: #e5e5e5;
+    padding: 1rem;
+    word-wrap: break-word;
+    margin: 1rem 0;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+}
+
+.diff_category {
+    display: none;
+    /* display: flex; */
+    gap: 2px;
+    font-size: 0.7rem;
+    justify-content: flex-end;
+}
+
+.diff_added {
+    background-color: var(--text-color);
+    color: var(--inverted-text-color);
+    padding: 0 3px;
+    border-radius: 2px;
+}
+
+.diff_removed {
+    text-decoration: line-through;
+}
+
+.blockNoteContainer {
+    padding-bottom: 100px;
+}

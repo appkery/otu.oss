@@ -1,0 +1,21 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+/* 
+.bn-container {
+    padding-inline: 0;
+}
+
+.bn-editor   {
+    padding-inline: 0;
+} */
+
+#blocknote-container {
+    width: 100%;
+    margin-left: inherit;
+    padding: 0 !important;
+}
+
+#blocknote-container .bn-editor {
+    padding-inline: 0 !important;
+}

@@ -1,0 +1,204 @@
+.blockNoteContainer {
+    width: calc(100% + 48px);
+    margin-left: -24px;
+}
+
+/* 640px 이하 - 모바일 최적화 */
+@media (max-width: 640px) {
+    /* 드래그 핸들 버튼 숨김 (기존 기능 유지) */
+    .blockNoteContainer :global(.bn-side-menu) > button:nth-child(2) {
+        display: none !important;
+    }
+
+    /* + 버튼 터치 영역 최적화 (30x30pt) */
+    .blockNoteContainer :global(.bn-side-menu) button {
+        min-width: 30px !important;
+        min-height: 30px !important;
+        width: 30px !important;
+        height: 30px !important;
+        padding: 0 !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background-color: rgba(128, 128, 128, 0.15) !important;
+        border-radius: 8px !important;
+        margin: 4px 0 !important;
+    }
+
+    /* 버튼 호버/액티브 상태 */
+    .blockNoteContainer :global(.bn-side-menu) button:active {
+        background-color: rgba(128, 128, 128, 0.2) !important;
+        transform: scale(0.95);
+    }
+
+    /* SVG 아이콘 크기 */
+    .blockNoteContainer :global(.bn-side-menu) button svg {
+        width: 10px !important;
+        height: 10px !important;
+    }
+}
+
+/* 라이트 모드 커서 색상 - !important로 우선순위 높임 */
+.lightBlockNote :global(.ProseMirror) {
+    caret-color: var(--light-text-color) !important;
+}
+
+/* 다크 모드 커서 색상 - !important로 우선순위 높임 */
+.darkBlockNote :global(.ProseMirror) {
+    caret-color: var(--dark-text-color) !important;
+}
+
+/* 커서 숨김 스타일 재정의 방지 */
+.blockNoteContainer :global(.ProseMirror-hideselection) {
+    caret-color: inherit !important;
+}
+
+/* Panel styling - fixed with proper CSS Modules syntax */
+.blockNoteContainer :global(.bn-panel) {
+    max-width: 80%;
+}
+
+.blockNoteContainer :global(.bn-editor [data-content-type='table'] td) {
+    border-color: var(--border-color);
+}
+
+/* ProseMirror 특화 */
+.blockNoteContainer
+    :global(
+        .ProseMirror
+            *:not([data-content-type='bulletListItem']):not(
+                [data-content-type='numberedListItem']
+            )::before
+    ) {
+    border: none !important;
+}
+
+/* 사이드 메뉴 숨김 스타일 */
+.hideSideMenu :global(.bn-container-menu-buttons),
+.hideSideMenu :global(.bn-container-toolbar),
+.hideSideMenu :global(.bn-suggestion-menu),
+.hideSideMenu :global(.bn-slash-menu),
+.hideSideMenu :global(.bn-side-menu),
+.hideSideMenu :global(.bn-popover),
+.hideSideMenu :global([class*='sideMenu']),
+.hideSideMenu :global([id*='sideMenu']) {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+
+/* Side Menu 배경색 톤다운 */
+.blockNoteContainer :global(.bn-side-menu) {
+    background-color: none !important;
+    border-radius: 6px;
+}
+
+.blockNoteContainer :global(.bn-side-menu svg) {
+    color: var(--text-color) !important;
+    opacity: 0.6;
+}
+
+.blockNoteContainer :global(.bn-side-menu svg:hover) {
+    opacity: 1;
+    transition: all 0.15s ease;
+}
+
+.darkBlockNote :global(.bn-side-menu) {
+    background-color: none !important;
+}
+
+/* Side Menu 버튼 스타일 개선 */
+.blockNoteContainer :global(.bn-side-menu .bn-button) {
+    background-color: none !important;
+    border: none !important;
+}
+
+.darkBlockNote :global(.bn-side-menu .bn-button) {
+    background-color: transparent !important;
+}
+
+.blockNoteContainer :global(.bn-side-menu .bn-button:hover) {
+    background-color: inherit !important;
+    border-color: red !important;
+}
+
+.blockNoteContainer :global(.bn-side-menu .bn-button svg) {
+    height: 14px !important;
+    width: 14px !important;
+}
+
+/* 커스텀 슬래시 메뉴 스타일 */
+.customSlashMenu {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+    min-width: 300px;
+    max-width: 100%;
+    padding: 15px;
+    background-color: var(--high-contrast-bg-color) !important;
+    border: none;
+    align-self: flex-start;
+}
+
+.darkBlockNote .customSlashMenu {
+    background: #1f2937;
+    border-color: #374151;
+    color: #f9fafb;
+}
+
+.slashMenuGrid {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 15px;
+}
+
+.slashMenuItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    padding: 8px;
+    background-color: var(--bg-color) !important;
+    border: none !important;
+    opacity: 0.8;
+}
+
+.slashMenuItem:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    opacity: 1;
+}
+
+.darkBlockNote .slashMenuItem {
+    background-color: #374151;
+    border-color: #4b5563;
+}
+
+.darkBlockNote .slashMenuItem:hover {
+    background-color: #4b5563;
+    border-color: #6b7280;
+}
+
+.slashMenuItemSelected {
+    background-color: #f1f5f9;
+}
+
+.slashMenuItemIcon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+    padding-top: 2px;
+}
+
+.slashMenuItemIconText * {
+}

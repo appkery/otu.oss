@@ -1,0 +1,10 @@
+.root {
+    padding: 0 1rem;
+    font-weight: 100;
+}
+
+.root h1 {
+    font-size: 20px;
+    margin: 2rem 0 0.6rem 0;
+    font-weight: 500;
+}

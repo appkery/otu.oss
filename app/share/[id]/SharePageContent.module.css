@@ -1,0 +1,175 @@
+.sharePageEditor :global(.bn-editor) {
+    padding: 0 !important;
+}
+
+/* BlockNote 정적 문서 스타일 */
+.sharePageEditor :global(.bn-container) {
+    width: 100%;
+    font-family:
+        'Inter',
+        -apple-system,
+        BlinkMacSystemFont,
+        'Segoe UI',
+        Roboto,
+        Helvetica,
+        Arial,
+        sans-serif;
+    background-color: var(--high-contrast-bg-color, white);
+    color: var(--text-color, #2c2f7e);
+    font-size: 16px; /* 기본 폰트 크기 설정 */
+}
+
+.sharePageEditor :global(.bn-default-styles) {
+    width: 100%;
+    max-width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* 블록 사이 간격 */
+    font-size: 1rem; /* 기본 폰트 크기 설정 */
+}
+
+/* 블록 스타일 */
+.sharePageEditor :global(.bn-default-styles p) {
+    margin: 0;
+    padding: 3px 0;
+    line-height: 1.6;
+    color: var(--text-color, #2c2f7e);
+    font-size: 1rem; /* 기본 폰트 크기 설정 */
+}
+
+/* 헤딩 스타일 */
+.sharePageEditor :global(.bn-default-styles h1) {
+    font-size: 1.5em; /* 2em에서 축소 */
+    font-weight: 700;
+    margin: 0.67em 0 0.33em;
+    line-height: 1.3;
+    color: var(--text-color, #2c2f7e);
+}
+
+.sharePageEditor :global(.bn-default-styles h2) {
+    font-size: 1.3em; /* 1.5em에서 축소 */
+    font-weight: 700;
+    margin: 0.83em 0 0.33em;
+    line-height: 1.35;
+    color: var(--text-color, #2c2f7e);
+}
+
+.sharePageEditor :global(.bn-default-styles h3) {
+    font-size: 1.1em; /* 1.17em에서 축소 */
+    font-weight: 700;
+    margin: 1em 0 0.33em;
+    line-height: 1.4;
+    color: var(--text-color, #2c2f7e);
+}
+
+/* 인용구 스타일 */
+.sharePageEditor :global(.bn-default-styles blockquote) {
+    margin: 0;
+    padding-left: 16px;
+    border-left: 3px solid var(--border-color, #a0a3bc);
+    color: #6b7280;
+}
+
+/* 코드 블록 스타일 */
+.sharePageEditor :global(.bn-default-styles pre) {
+    background-color: var(--focus-bg-color, #cdd0d3);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    overflow-x: auto;
+}
+
+.sharePageEditor :global(.bn-default-styles code) {
+    background-color: var(--focus-bg-color, #cdd0d3);
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 0.9em;
+}
+
+/* 리스트 스타일 */
+.sharePageEditor :global(.bn-default-styles ul),
+.sharePageEditor :global(.bn-default-styles ol) {
+    padding-left: 24px;
+    margin: 0;
+    color: var(--text-color, #2c2f7e);
+}
+
+.sharePageEditor :global(.bn-default-styles li) {
+    margin: 4px 0;
+    color: var(--text-color, #2c2f7e);
+}
+
+/* 이미지 스타일 */
+.sharePageEditor :global(.bn-default-styles img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+/* 테이블 스타일 */
+.sharePageEditor :global(.bn-default-styles table) {
+    border-collapse: collapse;
+    width: 100%;
+    margin: 8px 0;
+    border-color: var(--border-color, #a0a3bc);
+}
+
+.sharePageEditor :global(.bn-default-styles td),
+.sharePageEditor :global(.bn-default-styles th) {
+    border: 1px solid var(--border-color, #a0a3bc);
+    padding: 8px;
+    color: var(--text-color, #2c2f7e);
+}
+
+.sharePageEditor :global(.bn-default-styles th) {
+    background-color: var(--focus-bg-color, #cdd0d3);
+}
+
+/* 선택 스타일 */
+.sharePageEditor :global(::selection) {
+    background-color: var(--text-color, #2c2f7e);
+    color: var(--bg-color, #dfe2dd);
+}
+
+/* BlockNoteView 스타일 오버라이드 */
+.sharePageEditor :global(.bn-container .mantine-BlockNoteView-content) {
+    font-size: 1rem;
+}
+
+.sharePageEditor :global(.bn-container [data-content-type='heading'] [data-level='1']) {
+    font-size: 1.5em;
+}
+
+.sharePageEditor :global(.bn-container [data-content-type='heading'] [data-level='2']) {
+    font-size: 1.3em;
+}
+
+.sharePageEditor :global(.bn-container [data-content-type='heading'] [data-level='3']) {
+    font-size: 1.1em;
+}
+
+/* 모바일에서 자동 포커스 방지 - 읽기 전용 모드 */
+@media (max-width: 768px) {
+    .sharePageEditor :global(.bn-container) {
+        -webkit-touch-callout: none;
+        -webkit-user-select: text; /* 텍스트 선택은 허용 */
+        pointer-events: auto;
+    }
+
+    .sharePageEditor :global(.ProseMirror) {
+        -webkit-user-select: text; /* 텍스트 선택은 허용 */
+        user-select: text;
+        outline: none !important;
+    }
+
+    /* 이미지와 미디어 요소의 포커스 방지 */
+    .sharePageEditor :global(.bn-visual-media),
+    .sharePageEditor :global(img) {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        outline: none !important;
+        pointer-events: none; /* 읽기 전용이므로 이미지 상호작용 차단 */
+    }
+}

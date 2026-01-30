@@ -1,0 +1,70 @@
+:global(.dark) .root {
+    color: #e0e0e0;
+}
+
+.root h1 {
+    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.7rem;
+    font-weight: 600;
+}
+.root ul {
+    padding: 1rem;
+}
+.root li {
+    list-style-type: circle;
+}
+.apply {
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.root dd .wrapper {
+    border: 1px solid #111;
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.root dd .wrapper table {
+    border-collapse: collapse;
+}
+
+.root table thead th {
+    background-color: #595963;
+}
+
+.root table td,
+.root table th {
+    padding: 0.5rem 0.8rem;
+    text-align: left;
+    font-weight: normal;
+    border-left: 1px solid #111;
+    border-bottom: 1px solid #111;
+    vertical-align: text-top;
+}
+
+.root table tr th:first-child,
+.root table tr td:first-child {
+    border-left: none;
+}
+
+.root table tbody tr:last-child th,
+.root table tr:last-child td {
+    border-bottom: none;
+}
+
+.root table tbody tr td:nth-child(2) {
+    white-space: nowrap;
+}
+
+:global(.dark) .root table {
+    color: white;
+}
+:global(.dark) .root dd .wrapper {
+    border: 1px solid white;
+}
+:global(.dark) .root table td,
+:global(.dark) .root table th {
+    border: 1px solid white !important;
+}

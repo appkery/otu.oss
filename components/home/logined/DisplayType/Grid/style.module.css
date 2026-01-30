@@ -1,0 +1,51 @@
+.my_masonry_grid {
+    display: -webkit-box; /* Not needed if autoprefixing */
+    display: -ms-flexbox; /* Not needed if autoprefixing */
+    display: flex;
+    margin-left: -15px; /* gutter size offset */
+    width: auto;
+}
+.my_masonry_grid_column {
+    padding-left: 15px; /* gutter size */
+    background-clip: padding-box;
+}
+
+/* Style your items */
+.my_masonry_grid_column > div {
+    /* change div to reference your elements you put in <Masonry> */
+    margin-bottom: 15px;
+    contain: layout; /* 레이아웃 격리로 CLS 방지 */
+}
+
+:global(html.light) .image_wrapper,
+:global(html.dark) .image_wrapper,
+:global(html.gray) .image_wrapper,
+:global(html.white) .image_wrapper,
+:global(html.black) .image_wrapper {
+    position: relative;
+    aspect-ratio: 1 / 1; /* CLS 방지를 위한 명시적 비율 설정 */
+}
+
+:global(html.light) .image_overlay {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+:global(html.light) .image_wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--light-key-color);
+    mix-blend-mode: color;
+    opacity: 0.1;
+    pointer-events: none;
+    z-index: 1;
+}
+
+:global(html.light) .title {
+    mix-blend-mode: normal;
+}

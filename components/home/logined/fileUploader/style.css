@@ -1,0 +1,43 @@
+/* 다크 테마 (black 클래스) backdrop */
+.black uc-modal > dialog::backdrop {
+    background-color: rgba(0, 0, 0, 0.9);
+}
+
+/* 라이트 테마 (gray, white 클래스) backdrop */
+uc-modal > dialog::backdrop {
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+#file_uploader
+    > div
+    > lr-file-uploader-regular
+    > uc-modal
+    > dialog
+    > lr-upload-list
+    > div.toolbar
+    > button {
+    padding: 1px 1.2rem;
+}
+
+.uc-secondary-btn,
+.uc-primary-btn {
+    padding: 0 0.4rem;
+}
+
+#file_uploader > div > uc-file-uploader-regular > uc-simple-btn > uc-drop-area > button {
+    display: none;
+}
+
+uc-drop-area {
+    border-width: 1px;
+    border-style: dashed;
+    border-color: color-mix(in srgb, var(--border-color) 50%, transparent);
+}
+
+uc-copyright {
+    display: none;
+}
+
+uc-start-from > div > button {
+    background-color: var(--bg-color);
+}

@@ -1,0 +1,1 @@
+alter table "public"."topics" add column "is_public" boolean default true;

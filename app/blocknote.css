@@ -1,0 +1,250 @@
+/* ProseMirror 에디터 커서 색상 설정 */
+html.light .ProseMirror {
+    caret-color: var(--light-text-color) !important;
+}
+
+html.dark .ProseMirror {
+    caret-color: var(--dark-text-color) !important;
+}
+
+/* BlockNote 에디터에서 커서 색상이 투명해지는 문제 방지 */
+html.light .ProseMirror-hideselection {
+    caret-color: var(--light-text-color) !important;
+}
+
+html.dark .ProseMirror-hideselection {
+    caret-color: var(--dark-text-color) !important;
+}
+
+img.bn-visual-media {
+    border-radius: 0 !important;
+}
+
+/* BlockNote 수평선 스타일 */
+.ProseMirror hr,
+.bn-container hr,
+.bn-editor hr {
+    width: 100%;
+    border: 0;
+    height: 1px;
+    background-color: var(--border-color);
+    margin: 1.5rem 0;
+}
+
+/* BlockNote 테이블 스타일 */
+.ProseMirror [data-content-type='table'] th {
+    border: 1px solid var(--border-color) !important;
+}
+
+/* 다른 선택자 패턴 대응 */
+.bn-editor th,
+[data-content-type='table'] th,
+table th {
+    border: 1px solid var(--border-color) !important;
+}
+
+/* 테이블 셀 텍스트 줄바꿈 스타일 */
+.bn-container table,
+.bn-editor table,
+.ProseMirror table,
+.bn-container [data-content-type='table'],
+.bn-editor [data-content-type='table'],
+.ProseMirror [data-content-type='table'] {
+    table-layout: fixed;
+    width: 100%;
+}
+
+.bn-container td,
+.bn-editor td,
+.ProseMirror td,
+.bn-container th,
+.bn-editor th,
+.ProseMirror th,
+.bn-container [data-content-type='table'] td,
+.bn-editor [data-content-type='table'] td,
+.ProseMirror [data-content-type='table'] td,
+.bn-container [data-content-type='table'] th,
+.bn-editor [data-content-type='table'] th,
+.ProseMirror [data-content-type='table'] th {
+    white-space: normal;
+    word-break: keep-all;
+    min-width: 80px;
+    overflow-wrap: break-word;
+}
+
+/* BlockNote 컨텐츠 내 스크롤바 스타일 - 메인 영역과 일치 */
+/* 공통 스크롤바 스타일 */
+.bn-container ::-webkit-scrollbar,
+.bn-editor ::-webkit-scrollbar,
+.ProseMirror ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    border-radius: 4px;
+}
+
+/* 라이트 모드 스크롤바 스타일 */
+html.light .bn-container ::-webkit-scrollbar-track,
+html.light .bn-editor ::-webkit-scrollbar-track,
+html.light .ProseMirror ::-webkit-scrollbar-track {
+    background: #e5e5e5;
+}
+
+html.light .bn-container ::-webkit-scrollbar-thumb,
+html.light .bn-editor ::-webkit-scrollbar-thumb,
+html.light .ProseMirror ::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.5) !important;
+    /* iOS 대응을 위해 불투명도 높임 */
+}
+
+html.light .bn-container ::-webkit-scrollbar-thumb:hover,
+html.light .bn-editor ::-webkit-scrollbar-thumb:hover,
+html.light .ProseMirror ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* 다크 모드 스크롤바 스타일 */
+html.dark .bn-container ::-webkit-scrollbar-track,
+html.dark .bn-editor ::-webkit-scrollbar-track,
+html.dark .ProseMirror ::-webkit-scrollbar-track {
+    background: black;
+}
+
+html.dark .bn-container ::-webkit-scrollbar-thumb,
+html.dark .bn-editor ::-webkit-scrollbar-thumb,
+html.dark .ProseMirror ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.2) !important;
+    /* 불투명도 강화 */
+}
+
+html.dark .bn-container ::-webkit-scrollbar-thumb:hover,
+html.dark .bn-editor ::-webkit-scrollbar-thumb:hover,
+html.dark .ProseMirror ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* iOS 모바일 스크롤바 스타일 강화 */
+@supports (-webkit-touch-callout: none) {
+    /* iOS 기기 전용 스타일 */
+    html.light .bn-container,
+    html.light .bn-editor,
+    html.light .ProseMirror,
+    html.light .bn-container pre,
+    html.light .bn-editor pre,
+    html.light .ProseMirror pre {
+        scrollbar-color: rgba(0, 0, 0, 0.5) #e5e5e5;
+        /* Firefox 용 */
+        scrollbar-width: thin;
+        /* Firefox 용 */
+    }
+
+    html.light .bn-container ::-webkit-scrollbar-thumb,
+    html.light .bn-editor ::-webkit-scrollbar-thumb,
+    html.light .ProseMirror ::-webkit-scrollbar-thumb {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+        -webkit-box-shadow: 0 0 1px rgba(255, 255, 255, 0.5);
+        border: 1px solid rgba(0, 0, 0, 0.1);
+    }
+
+    /* iOS에서 직접 요소에 스타일 적용 */
+    html.light .bn-editor,
+    html.light .ProseMirror,
+    html.light .bn-container pre,
+    html.light .bn-container [data-content-type='table'],
+    html.light .bn-container table,
+    html.light .bn-container [style*='overflow'] {
+        /* iOS 스크롤바 스타일 직접 지정 */
+        --webkit-scrollbar-thumb-color: rgba(0, 0, 0, 0.5);
+        --webkit-scrollbar-track-color: #e5e5e5;
+    }
+
+    /* iOS에서 스크롤이 필요한 요소에 명시적 스타일 적용 */
+    html.light .bn-container [style*='overflow-x: auto'],
+    html.light .bn-container [style*='overflow: auto'],
+    html.light .bn-editor [style*='overflow-x: auto'],
+    html.light .bn-editor [style*='overflow: auto'],
+    html.light .ProseMirror [style*='overflow-x: auto'],
+    html.light .ProseMirror [style*='overflow: auto'],
+    html.light .bn-container pre,
+    html.light .bn-editor pre,
+    html.light .ProseMirror pre {
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* 코드 블록과 테이블에 직접적인 스타일 적용 */
+    html.light .bn-container pre::-webkit-scrollbar-thumb,
+    html.light .bn-editor pre::-webkit-scrollbar-thumb,
+    html.light .ProseMirror pre::-webkit-scrollbar-thumb,
+    html.light .bn-container table::-webkit-scrollbar-thumb,
+    html.light .bn-editor table::-webkit-scrollbar-thumb,
+    html.light .ProseMirror table::-webkit-scrollbar-thumb {
+        background-color: #777 !important;
+        /* 더 어둡게 */
+    }
+}
+
+/* BlockNote placeholder 투명도 조정 - 거의 안보이게 처리 */
+.bn-inline-content::before {
+    opacity: 0.2 !important;
+    /* 0 ~ 1 사이 값 */
+    color: var(--text-color) !important;
+}
+
+.bn-inline-content a {
+    text-decoration: underline;
+}
+
+/* 모바일에서 자동 포커스 방지 */
+@media (max-width: 768px) {
+    /* 이미지 블록이 자동으로 포커스되는 것을 방지 */
+    .bn-container [data-content-type='image'] {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        -khtml-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        pointer-events: auto;
+        /* 터치는 허용하되 포커스는 방지 */
+    }
+
+    /* ProseMirror 에디터의 자동 포커스 방지 */
+    .ProseMirror {
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+    }
+
+    /* 포맷팅 툴바 및 드롭다운 상위 요소 */
+    .bn-toolbar,
+    .bn-formatting-toolbar,
+    .mantine-Menu-dropdown,
+    .bn-menu-dropdown {
+        -webkit-user-select: auto;
+        user-select: auto;
+        pointer-events: auto;
+        cursor: pointer;
+        overflow: visible !important;
+    }
+
+    /* 메뉴 아이템 터치 개선 */
+    .mantine-Menu-item {
+        -webkit-user-select: auto;
+        user-select: auto;
+        pointer-events: auto;
+        cursor: pointer;
+    }
+
+    /* 읽기 전용 모드에서 모든 상호작용 차단 */
+    .read-only-editor .ProseMirror {
+        pointer-events: none !important;
+    }
+
+    /* 이미지 요소의 포커스 방지 */
+    .bn-visual-media {
+        -webkit-touch-callout: none;
+        -webkit-user-select: none;
+        user-select: none;
+        outline: none !important;
+    }
+}

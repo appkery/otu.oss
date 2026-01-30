@@ -1,0 +1,12 @@
+COMMENT ON COLUMN public.order.id IS '주문에 대한 고유 식별자. 이 식별자는 portone에서는 payment_id값이라고 부름.';
+COMMENT ON COLUMN public.order.subscriptions_id IS '관련 구독에 대한 식별자';
+COMMENT ON COLUMN public.order.user_id IS '주문을 한 사용자에 대한 식별자';
+COMMENT ON COLUMN public.order.retry_count IS '주문 재시도 횟수';
+COMMENT ON COLUMN public.order.result_status IS '주문 결과 상태';
+COMMENT ON COLUMN public.order.notes IS '주문에 대한 추가 노트';
+COMMENT ON COLUMN public.order.updated_at IS '마지막 업데이트 타임스탬프';
+COMMENT ON COLUMN public.order.created_at IS '주문이 생성된 타임스탬프';
+COMMENT ON COLUMN public.order.parent_id IS '이 주문이 첫주문이 아닌 경우 이전 주문에 대한 id';
+COMMENT ON COLUMN public.order.psp_schedule_id IS '예약 결제에 대한 식별자';
+COMMENT ON COLUMN public.order.psp_scheduled_at IS '예약 결제되도록 예약된 시간';
+COMMENT ON COLUMN public.order.psp_transaction_id IS 'portone 쪽의 order의 식별자로 payment_id가 otu.ai의 order 식별자인 것과 구분된다.';

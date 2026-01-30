@@ -1,0 +1,1 @@
+ALTER TYPE subscription_active_status ADD VALUE 'INACTIVE_PENDING_BILLING_KEY';

@@ -1,0 +1,622 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* * {
+    outline: 1px dotted red;
+} */
+
+#bottomNav {
+    /* margin-bottom: 50px; */
+}
+
+:root {
+    /* gray (former light) */
+    --gray-bg-color: #dfe2dd;
+    --gray-list-bg-color: #dfe2dd;
+    --gray-high-contrast-bg-color: #ffffff;
+    --gray-text-color: #2c2f7e;
+    --gray-sub-text-color: rgba(0, 0, 0, 0.5);
+    --gray-border-color: #a0a3bc;
+    --gray-focus-bg-color: #cdd0d3;
+    --gray-high-focus-bg-color: #cfd3d2;
+    --gray-modal-bg-color: #ffffff;
+    --gray-selection-color: rgba(44, 47, 126, 0.25);
+    --gray-selection-overlay-color: rgba(44, 47, 126, 0.35);
+    --gray-selection-bar-bg: #191b5c;
+    --gray-selection-btn-bg: #2c2f7e;
+    --gray-selection-btn-text: #dfe2dd;
+
+    /* black (former dark) */
+    --black-bg-color: #262627;
+    --black-high-contrast-bg-color: #1e1e1e;
+    --black-text-color: #dfe2dd;
+    --black-sub-text-color: rgba(255, 255, 255, 0.6);
+    --black-border-color: #444444;
+    --black-focus-bg-color: #393938;
+    --black-high-focus-bg-color: #000000;
+    --black-modal-bg-color: #191919;
+    --black-selection-color: rgba(223, 226, 221, 0.25);
+    --black-selection-overlay-color: rgba(223, 226, 221, 0.35);
+    --black-selection-bar-bg: #393938;
+    --black-selection-btn-bg: #1e1e1e;
+    --black-selection-btn-text: #dfe2dd;
+
+    /* white (new) - palette guide
+       text/active icon: #2D2D2D
+       inactive icon/sub text: #B0B0B0 (exposed as --white-sub-text-color)
+       divider/border: #D6D6D6
+       background: #F8F8F8
+       box inner: #FFFFFF
+    */
+    --white-bg-color: #f8f8f8;
+    --white-list-bg-color: #f8f8f8;
+    --white-high-contrast-bg-color: #ffffff;
+    --white-text-color: #2d2d2d;
+    --white-sub-text-color: #b0b0b0;
+    --white-border-color: #d6d6d6;
+    --white-focus-bg-color: #fff; /* subtle hover/active */
+    --white-high-focus-bg-color: #ffffff;
+    --white-modal-bg-color: #ffffff;
+    --white-selection-color: rgba(45, 45, 45, 0.25);
+    --white-selection-overlay-color: rgba(45, 45, 45, 0.35);
+    --white-selection-bar-bg: #2d2d2d;
+    --white-selection-btn-bg: #424242;
+    --white-selection-btn-text: #f8f8f8;
+
+    /* backward-compat variable aliases */
+    /* --light-bg-color: var(--gray-bg-color);
+    --light-high-contrast-bg-color: var(--gray-high-contrast-bg-color);
+    --light-text-color: var(--gray-text-color);
+    --light-border-color: var(--gray-border-color);
+    --light-foucs-bg-color: var(--gray-focus-bg-color);
+    --light-high-focus-bg-color: var(--gray-high-focus-bg-color);
+    --light-modal-bg-color: var(--gray-modal-bg-color);
+
+    --dark-bg-color: var(--black-bg-color);
+    --dark-high-contrast-bg-color: var(--black-high-contrast-bg-color);
+    --dark-text-color: var(--black-text-color);
+    --dark-border-color: var(--black-border-color);
+    --focus-dark-bg-color: var(--black-focus-bg-color);
+    --dark-high-focus-bg-color: var(--black-high-focus-bg-color);
+    --dark-modal-bg-color: var(--black-modal-bg-color); */
+}
+
+/* Theme variables */
+/* Default theme based on system preference */
+html {
+    --bg-color: var(--gray-bg-color);
+    --list-bg-color: var(--gray-list-bg-color);
+    --high-contrast-bg-color: var(--gray-high-contrast-bg-color);
+    --text-color: var(--gray-text-color);
+    --sub-text-color: var(--gray-sub-text-color);
+    --border-color: var(--gray-border-color);
+    --border-color-faint: color-mix(in srgb, var(--gray-border-color) 25%, transparent);
+    --focus-bg-color: var(--gray-focus-bg-color);
+    --inverted-text-color: var(--gray-bg-color);
+    --high-focus-bg-color: var(--gray-high-focus-bg-color);
+    --modal-bg-color: var(--gray-modal-bg-color);
+    --selection-color: var(--gray-selection-color);
+    --selection-overlay-color: var(--gray-selection-overlay-color);
+    --selection-bar-bg: var(--gray-selection-bar-bg);
+    --selection-btn-bg: var(--gray-selection-btn-bg);
+    --selection-btn-text: var(--gray-selection-btn-text);
+    --color-scheme: light;
+    color-scheme: light; /* 브라우저 UI 힌트 (스크롤바, 폼 등) */
+}
+
+/* System dark mode preference */
+@media (prefers-color-scheme: dark) {
+    html:not(.gray):not(.white):not(.black) {
+        --bg-color: var(--black-bg-color);
+        --list-bg-color: var(--black-bg-color);
+        --high-contrast-bg-color: var(--black-high-contrast-bg-color);
+        --text-color: var(--black-text-color);
+        --sub-text-color: var(--black-sub-text-color);
+        --border-color: var(--black-border-color);
+        --border-color-faint: color-mix(in srgb, var(--black-border-color) 40%, transparent);
+        --focus-bg-color: var(--black-focus-bg-color);
+        --inverted-text-color: var(--black-bg-color);
+        --high-focus-bg-color: var(--black-high-focus-bg-color);
+        --modal-bg-color: var(--black-modal-bg-color);
+        --selection-color: var(--black-selection-color);
+        --selection-overlay-color: var(--black-selection-overlay-color);
+        --selection-bar-bg: var(--black-selection-bar-bg);
+        --selection-btn-bg: var(--black-selection-btn-bg);
+        --selection-btn-text: var(--black-selection-btn-text);
+        --color-scheme: dark;
+        color-scheme: dark;
+    }
+}
+
+/* Theme variables - explicit classes */
+html.gray {
+    --bg-color: var(--gray-bg-color);
+    --list-bg-color: var(--gray-list-bg-color);
+    --high-contrast-bg-color: var(--gray-high-contrast-bg-color);
+    --text-color: var(--gray-text-color);
+    --sub-text-color: var(--gray-sub-text-color);
+    --border-color: var(--gray-border-color);
+    --border-color-faint: color-mix(in srgb, var(--gray-border-color) 25%, transparent);
+    --focus-bg-color: var(--gray-focus-bg-color);
+    --inverted-text-color: var(--gray-bg-color);
+    --high-focus-bg-color: var(--gray-high-focus-bg-color);
+    --modal-bg-color: var(--gray-modal-bg-color);
+    --selection-color: var(--gray-selection-color);
+    --selection-overlay-color: var(--gray-selection-overlay-color);
+    --selection-bar-bg: var(--gray-selection-bar-bg);
+    --selection-btn-bg: var(--gray-selection-btn-bg);
+    --selection-btn-text: var(--gray-selection-btn-text);
+    --color-scheme: light;
+    color-scheme: light;
+}
+
+html.white {
+    --bg-color: var(--white-bg-color);
+    --list-bg-color: var(--white-list-bg-color);
+    --high-contrast-bg-color: var(--white-high-contrast-bg-color);
+    --text-color: var(--white-text-color);
+    --sub-text-color: var(--white-sub-text-color);
+    --border-color: var(--white-border-color);
+    --border-color-faint: color-mix(in srgb, var(--white-border-color) 25%, transparent);
+    --focus-bg-color: var(--white-focus-bg-color);
+    --inverted-text-color: var(--white-bg-color);
+    --high-focus-bg-color: var(--white-high-focus-bg-color);
+    --modal-bg-color: var(--white-modal-bg-color);
+    --selection-color: var(--white-selection-color);
+    --selection-overlay-color: var(--white-selection-overlay-color);
+    --selection-bar-bg: var(--white-selection-bar-bg);
+    --selection-btn-bg: var(--white-selection-btn-bg);
+    --selection-btn-text: var(--white-selection-btn-text);
+    --color-scheme: light;
+    color-scheme: light;
+}
+
+html.black {
+    --bg-color: var(--black-bg-color);
+    --list-bg-color: var(--black-list-bg-color);
+    --high-contrast-bg-color: var(--black-high-contrast-bg-color);
+    --text-color: var(--black-text-color);
+    --sub-text-color: var(--black-sub-text-color);
+    --border-color: var(--black-border-color);
+    --border-color-faint: color-mix(in srgb, var(--black-border-color) 40%, transparent);
+    --focus-bg-color: var(--black-focus-bg-color);
+    --inverted-text-color: var(--black-bg-color);
+    --high-focus-bg-color: var(--black-high-focus-bg-color);
+    --modal-bg-color: var(--black-modal-bg-color);
+    --selection-color: var(--black-selection-color);
+    --selection-overlay-color: var(--black-selection-overlay-color);
+    --selection-bar-bg: var(--black-selection-bar-bg);
+    --selection-btn-bg: var(--black-selection-btn-bg);
+    --selection-btn-text: var(--black-selection-btn-text);
+    --color-scheme: dark;
+    color-scheme: dark;
+}
+
+/* Backward-compatible aliases */
+/* html.light {
+    --bg-color: var(--gray-bg-color);
+    --high-contrast-bg-color: var(--gray-high-contrast-bg-color);
+    --text-color: var(--gray-text-color);
+    --border-color: var(--gray-border-color);
+    --border-color-faint: color-mix(in srgb, var(--gray-border-color) 25%, transparent);
+    --focus-bg-color: var(--gray-focus-bg-color);
+    --inverted-text-color: var(--gray-bg-color);
+    --high-focus-bg-color: var(--gray-high-focus-bg-color);
+    --modal-bg-color: var(--gray-modal-bg-color);
+}
+
+html.dark {
+    --bg-color: var(--black-bg-color);
+    --high-contrast-bg-color: var(--black-high-contrast-bg-color);
+    --text-color: var(--black-text-color);
+    --border-color: var(--black-border-color);
+    --border-color-faint: color-mix(in srgb, var(--black-border-color) 40%, transparent);
+    --focus-bg-color: var(--black-focus-bg-color);
+    --inverted-text-color: var(--black-bg-color);
+    --high-focus-bg-color: var(--black-high-focus-bg-color);
+    --modal-bg-color: var(--black-modal-bg-color);
+} */
+
+/* Base styles */
+html {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.border-color {
+    border-color: var(--border-color);
+}
+.border-color-faint {
+    border-color: var(--border-color-faint);
+}
+.border-text-color {
+    border-color: var(--text-color);
+}
+
+.text-color {
+    color: var(--text-color);
+}
+
+.placeholder-text-color::placeholder {
+    color: var(--text-color);
+    opacity: 0.3;
+}
+
+.text-bg-color {
+    color: var(--bg-color);
+}
+
+.inverted-text-color {
+    color: var(--inverted-text-color);
+}
+
+.bg-color {
+    background-color: var(--bg-color);
+}
+
+.list-bg-color {
+    background-color: var(--list-bg-color);
+}
+
+.bg-text-color {
+    background-color: var(--text-color);
+}
+
+.focus-bg-color {
+    background-color: var(--focus-bg-color);
+}
+
+.high-focus-bg-color {
+    background-color: var(--high-focus-bg-color);
+}
+
+.hover-emphasis:active,
+.hover-emphasis:focus {
+    background-color: var(--focus-bg-color);
+}
+
+@media (hover: hover) {
+    .hover-emphasis:hover {
+        background-color: var(--focus-bg-color);
+    }
+}
+
+/* 모바일(hover 없음)에서는 지정 컨테이너 내부만 hover 배경색 무력화(부작용 최소화) */
+/* 단, data-selected 속성이 있는 요소는 선택 상태이므로 제외 */
+@media (hover: none) and (pointer: coarse) {
+    .touch-hover-guard:hover:not(:active):not([data-selected]),
+    .touch-hover-guard *:hover:not(:active):not([data-selected]) {
+        background-color: transparent !important;
+    }
+}
+
+/* 전역 :hover 차단 게이팅 제거 - 터치 시작 시에도 hover는 보이되, 스크롤/종료 시 .no-hover로 해제 */
+
+.fill-text-color {
+    fill: var(--text-color);
+}
+
+.stroke-text-color {
+    stroke: var(--text-color);
+}
+
+::selection {
+    background-color: var(--text-color);
+    color: var(--inverted-text-color);
+}
+
+@media (max-width: 400px) {
+    .hide-on-400 {
+        display: none;
+    }
+}
+
+html.lightbox-opened {
+    overflow: hidden !important;
+}
+
+.dragging {
+    background-color: var(--focus-bg-color);
+}
+
+/* *:hover{
+  outline:1px dotted gray;
+} */
+
+.g {
+    outline: 5px solid rgba(0, 255, 0, 0.3);
+}
+
+.r {
+    outline: 5px solid rgba(255, 0, 0, 0.3);
+}
+
+.b {
+    outline: 5px solid rgba(0, 0, 255, 0.3);
+}
+
+.y {
+    outline: 5px solid rgba(255, 255, 0, 0.3);
+}
+
+.p {
+    outline: 5px solid rgba(255, 0, 255, 0.3);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes blink {
+    0% {
+        border-left-color: transparent;
+    }
+
+    50% {
+        border-left-color: #767676;
+    }
+
+    100% {
+        border-left-color: transparent;
+    }
+}
+
+.blink-border {
+    border-left: 1px solid;
+    animation: blink 1s infinite;
+}
+
+.black body,
+.gray body,
+.white body,
+.dark body,
+.light body {
+    transition: background-color 1s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.visible {
+    opacity: 1;
+}
+
+.hidden {
+    opacity: 0;
+}
+
+.flipContainer {
+    perspective: 1000px;
+}
+
+.flipIn,
+.flipOut {
+    backface-visibility: hidden;
+    transform-style: preserve-3d;
+    transition: transform 0.6s;
+}
+
+.flipIn {
+    transform: rotateX(0deg);
+}
+
+.flipOut {
+    transform: rotateX(180deg);
+}
+
+/* body {
+  transition: color 0.5s ease, background-color 0.5s ease, border-color 0.5s ease, outline-color 0.5s ease;
+  animation: fadeIn 0.3s ease forwards;
+} */
+
+.black lr-file-uploader-regular,
+.dark lr-file-uploader-regular {
+    --darkmode: 1;
+    /* Enable dark mode */
+}
+
+.gray lr-file-uploader-regular,
+.white lr-file-uploader-regular,
+.light lr-file-uploader-regular {
+    --darkmode: 0;
+    /* Enable dark mode */
+}
+
+body {
+    overflow-y: visible !important;
+    overflow-x: hidden !important;
+}
+
+/* 스크롤바 전체의 스타일 */
+::-webkit-scrollbar {
+    width: 8px;
+    /* 스크롤바의 너비 */
+    border-radius: 4px;
+}
+
+/* 스크롤바 트랙 (바탕)의 스타일 */
+.black ::-webkit-scrollbar-track,
+.dark ::-webkit-scrollbar-track {
+    background: black;
+    /* 트랙의 배경 색상 */
+}
+
+/* 스크롤바 핸들 (움직이는 부분)의 스타일 */
+.black ::-webkit-scrollbar-thumb,
+.dark ::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.112);
+    /* 핸들의 배경 색상 */
+}
+
+/* 스크롤바 핸들을 호버할 때의 스타일 */
+.black ::-webkit-scrollbar-thumb:hover,
+.dark ::-webkit-scrollbar-thumb:hover {
+    background: #555;
+    /* 호버 시 핸들의 배경 색상 */
+}
+
+::-webkit-scrollbar-track {
+    background: #e5e5e5;
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.332);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+body.disableScroll {
+    overflow-y: hidden !important;
+}
+
+html,
+body {
+    overscroll-behavior: none;
+}
+
+.MuiTouchRipple-root::after {
+    animation-duration: 0.3s !important;
+}
+
+.MuiTouchRipple-child {
+    animation: fadeOut 3s;
+}
+
+/* todo redactor가 업그레이드 되면 없애야 함 */
+/* .rx-tooltip{
+  display: none;
+} */
+
+.disable-selection {
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+/* ios webkit에서 툴바를 viewport에 포함시키지 않는 문제를 해결하기 위한 클래스로 useCalculateViewportHeight와 셋트 */
+.fit-height {
+    height: calc(var(--vh, 1vh) * 99.99);
+}
+
+.dark .otu_loading,
+.black .otu_loading {
+    filter: invert(100%);
+}
+
+.inserted {
+    margin: 30px 0 !important;
+}
+
+#file_uploader {
+    position: fixed;
+    top: 0;
+}
+
+.gray .stroke-color,
+.white .stroke-color,
+.light .stroke-color {
+    stroke: black !important;
+}
+
+.black .stroke-color,
+.dark .stroke-color {
+    stroke: white !important;
+}
+
+.black .rx-panel-command .stroke-color,
+.dark .rx-panel-command .stroke-color {
+    stroke: black !important;
+}
+
+#lightboxContainer section.imageModal {
+    top: calc(env(safe-area-inset-top) + 3%);
+}
+
+.map-iframe {
+    margin-top: 1.2rem !important;
+    border-radius: 0.5rem !important;
+    width: 100% !important;
+}
+
+input,
+textarea {
+    caret-color: var(--text-color) !important;
+}
+
+#file_uploader > div > uc-file-uploader-regular > uc-modal dialog::backdrop,
+body > uc-file-uploader-regular > uc-modal > dialog::backdrop {
+    pointer-events: none !important;
+}
+
+/* 드래그 앤 드롭 관련 스타일 */
+body.drag-over {
+    position: relative;
+}
+
+body.drag-over::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(var(--text-color-rgb, 0, 0, 0), 0.6);
+    border: 3px dashed var(--text-color, #000);
+    pointer-events: none;
+    z-index: 9999;
+    animation: pulse 1.5s infinite alternate;
+}
+
+@keyframes pulse {
+    from {
+        opacity: 0.4;
+    }
+    to {
+        opacity: 0.7;
+    }
+}
+
+.click-animation {
+    /* 느리게 복원될 때 사용할 기본 트랜지션 (예: 200ms, ease-out) */
+    transition: transform 0.1s ease-out;
+}
+
+.click-animation:active {
+    /* 빠르게 축소될 때 사용할 트랜지션 (예: 50ms, ease-in) */
+    transition: transform 0.05s ease-in;
+    transform: scale(0.96);
+}
+
+/* 채팅 열릴 때 root 스크롤바 숨김 */
+.hide-scrollbar::-webkit-scrollbar {
+    display: none;
+}
+
+.hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* 루트 컨테이너에 대한 추가 설정 */
+#root {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: none;
+    touch-action: pan-x pan-y;
+}

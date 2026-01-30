@@ -1,0 +1,7 @@
+.history_scrollpane {
+    display: grid;
+    grid-template:
+        'messages' 1fr
+        'input' auto
+        'keyboard' env(keyboard-inset-height, 0px);
+}

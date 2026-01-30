@@ -1,0 +1,1 @@
+DROP FUNCTION IF EXISTS update_alarm_times(text[]);

@@ -1,0 +1,2 @@
+ALTER TABLE public.usage
+ALTER COLUMN platform DROP NOT NULL;

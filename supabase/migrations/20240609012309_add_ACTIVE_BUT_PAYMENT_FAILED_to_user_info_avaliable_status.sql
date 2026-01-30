@@ -1,0 +1,1 @@
+ALTER TYPE user_info_avaliable_status ADD VALUE 'ACTIVE_BUT_PAYMENT_FAILED';

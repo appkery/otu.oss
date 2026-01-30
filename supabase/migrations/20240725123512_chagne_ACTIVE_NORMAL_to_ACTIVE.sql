@@ -1,0 +1,1 @@
+ALTER TYPE subscription_active_status RENAME VALUE 'ACTIVE_NORMAL' TO 'ACTIVE';

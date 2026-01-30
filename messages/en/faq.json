@@ -1,0 +1,85 @@
+{
+    "title": "Frequently Asked Questions",
+    "items": [
+        {
+            "question": "How can I cancel or change my payment?",
+            "answer": "You can request a cancellation or change within 7 days of payment through customer support. For more details, refer to the terms of use."
+        },
+        {
+            "question": "What is the fee in KRW (South Korean Won)?",
+            "answer": "The current fee in KRW starts at 9,900 KRW per month for the basic plan. Detailed pricing is available on the plan page."
+        },
+        {
+            "question": "What is the refund policy?",
+            "answer": "Refunds are available only within 7 days of payment and if the service has not been used. Additional conditions may apply based on the terms of use."
+        },
+        {
+            "question": "How can I stop auto-renewal?",
+            "answer": "You can disable the auto-renewal option in the account settings page. The cancellation will take effect after the current subscription period ends."
+        },
+        {
+            "question": "What payment methods are supported?",
+            "answer": "We currently support various payment methods such as credit cards, debit cards, PayPal, and KakaoPay."
+        },
+        {
+            "question": "How can I upgrade my subscription?",
+            "answer": "Subscription upgrades can be done in the account settings under the plan change menu. The new plan will take effect immediately."
+        },
+        {
+            "question": "How can I check my subscription status?",
+            "answer": "After logging in, you can check your current subscription status and the remaining period on the account settings page."
+        },
+        {
+            "question": "Are taxes included in the price?",
+            "answer": "The displayed price does not include taxes. Additional taxes may apply depending on your region."
+        },
+        {
+            "question": "Can I use the service overseas?",
+            "answer": "Yes, the service is available overseas. However, some payment options may be restricted in certain regions."
+        },
+        {
+            "question": "Can I share my account with others?",
+            "answer": "Account sharing is prohibited by the terms of use. Each user should create their own account."
+        },
+        {
+            "question": "Is there a way to get a discount?",
+            "answer": "Discounts may be available during promotional periods or by using certain payment methods. Check your email notifications for updates."
+        },
+        {
+            "question": "How can I downgrade to a different plan?",
+            "answer": "You can downgrade by selecting the plan change option in account settings. Changes will take effect in the next billing cycle."
+        },
+        {
+            "question": "Will my data be retained after I cancel my subscription?",
+            "answer": "Your data will be retained for 30 days after cancellation. After that, it may be deleted, so please back up your data in advance if needed."
+        },
+        {
+            "question": "What should I do if my payment fails?",
+            "answer": "If your payment fails, please check the registered payment information and contact customer support if the issue persists."
+        },
+        {
+            "question": "Does the plan include family sharing features?",
+            "answer": "Family sharing features are available for premium plans or higher. Up to 5 members can share an account."
+        },
+        {
+            "question": "Where can I check my payment history?",
+            "answer": "You can check your payment history in the 'Payment Information' section of account settings."
+        },
+        {
+            "question": "What should I do if I forget my password and can't access my subscription?",
+            "answer": "You can regain access to your account by resetting your password. Additional support is available through customer service."
+        },
+        {
+            "question": "Is there a plan specifically for corporate users?",
+            "answer": "Yes, a corporate plan is available. For more details, contact the sales team or check the plan page."
+        },
+        {
+            "question": "Will I be charged automatically after a free trial?",
+            "answer": "After the free trial ends, the subscription will start automatically. If you don't want auto-renewal, cancel before the trial ends."
+        },
+        {
+            "question": "Can I pay in other currencies?",
+            "answer": "Supported currencies vary by region. You can check the available currencies on the payment page."
+        }
+    ]
+}

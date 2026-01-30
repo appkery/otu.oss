@@ -1,0 +1,2 @@
+ALTER TABLE alarm
+ALTER COLUMN next_alarm_time DROP NOT NULL;

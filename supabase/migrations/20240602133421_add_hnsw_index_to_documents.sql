@@ -1,0 +1,1 @@
+create index on public.documents using hnsw (embedding vector_cosine_ops);

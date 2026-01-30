@@ -1,0 +1,2 @@
+INSERT INTO api_usage_purpose (id, name, created_at) VALUES(4, 'Text Titling', '2024-01-21 00:00:00+00');
+INSERT INTO api_usage_purpose (id, name, created_at) VALUES(5, 'Search option selection', '2024-01-21 00:00:00+00');
