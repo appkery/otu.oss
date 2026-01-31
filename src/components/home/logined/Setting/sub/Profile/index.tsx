@@ -21,7 +21,6 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { FileUploaderRegular, UploadCtxProvider } from '@uploadcare/react-uploader';
 import '@uploadcare/react-uploader/core.css';
 import { createClient } from '@/supabase/utils/client';
-import { captureException } from '@sentry/nextjs';
 import { openSnackbarState, profileDialogState, profileUpdateState } from '@/lib/jotai';
 import { useSetAtom } from 'jotai';
 import s from '../style.module.css';
@@ -223,7 +222,7 @@ export default function Profile() {
                 timezone: profile?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
             });
         } catch (error) {
-            captureException(error);
+            console.error('Profile error:',error);
             console.error('Error loading profile:', error);
             // 에러 발생 시에도 기본 타임존 설정
             setTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone);
@@ -270,7 +269,7 @@ export default function Profile() {
                 vertical: 'bottom',
             });
         } catch (error) {
-            captureException(error);
+            console.error('Profile error:',error);
             console.error('Error saving profile:', error);
         }
     };

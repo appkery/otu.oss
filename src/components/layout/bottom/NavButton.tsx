@@ -1,4 +1,3 @@
-import { captureMessage } from '@sentry/nextjs';
 import React, { memo, ReactNode } from 'react';
 import { useAtomValue } from 'jotai';
 import { selectionModeState } from '@/lib/jotai';
@@ -20,7 +19,7 @@ export const NavButton = memo(({ onClick, children, isActive }: NavButtonProps) 
             ? onClick
             : () => {
                   console.warn('NavButton onClick이 정의되지 않았거나 함수가 아닙니다.');
-                  captureMessage('NavButton onClick이 정의되지 않았습니다.');
+                  console.log('NavButton onClick이 정의되지 않았습니다.');
               };
 
     return (

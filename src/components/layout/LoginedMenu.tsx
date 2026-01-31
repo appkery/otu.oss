@@ -15,7 +15,6 @@ import { createClient, fetchUserId } from '@/supabase/utils/client';
 import { clearStorage } from '@/functions/clearStorage';
 import { useLocale, useTranslations } from 'next-intl';
 import { Database } from '@/lib/database/types';
-import { addBreadcrumb } from '@sentry/nextjs';
 import { isReactNativeWebView } from '@/functions/detectEnvironment';
 import { communicateWithAppsWithCallback } from '../core/WebViewCommunicator';
 import { menuLogger } from '@/debug/menu';
@@ -98,7 +97,7 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
 
                     if (usageError) {
                         menuLogger('usage fetch error', usageError);
-                        addBreadcrumb({
+                        menuLogger('breadcrumb:', {
                             category: 'usage',
                             level: 'error',
                             message: 'usage 데이터 조회 실패',
@@ -118,7 +117,7 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
 
                     if (userInfoError) {
                         menuLogger('user_info fetch error', userInfoError);
-                        addBreadcrumb({
+                        menuLogger('breadcrumb:', {
                             category: 'usage',
                             level: 'error',
                             message: 'user_info 데이터 조회 실패',
@@ -131,7 +130,7 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
                     }
                 } catch (error) {
                     menuLogger('fetchUsage fatal error', error);
-                    addBreadcrumb({
+                    menuLogger('breadcrumb:', {
                         category: 'usage',
                         level: 'error',
                         message: '로그인 메뉴 데이터 로딩 실패',
@@ -195,7 +194,7 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
                 '<p class="text-sm text-gray-500 pt-1">' + t.raw('provider-logout-google') + '</p>';
         }
         menuLogger(`extraMessage: ${extraMessage}`);
-        addBreadcrumb({
+        menuLogger('breadcrumb:', {
             category: 'auth',
             message: '로그아웃 버튼 클릭',
         });
@@ -212,7 +211,7 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
                 communicateWithAppsWithCallback('requestLogoutToNative');
 
                 // 로그아웃 시도 로깅
-                addBreadcrumb({
+                menuLogger('breadcrumb:', {
                     category: 'auth',
                     message: '로그아웃 진행 중',
                 });
@@ -224,14 +223,14 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
                         : { scope: 'local' as const };
                     menuLogger(`signOutOptions: ${JSON.stringify(signOutOptions)}`);
                     await supabase.auth.signOut(signOutOptions);
-                    addBreadcrumb({
+                    menuLogger('breadcrumb:', {
                         category: 'auth',
                         message: logoutFromAllDevices
                             ? '로그아웃 완료 (모든 장치)'
                             : '로그아웃 완료 (현재 장치만)',
                     });
                 } catch (error) {
-                    addBreadcrumb({
+                    menuLogger('breadcrumb:', {
                         category: 'auth',
                         message: 'Supabase 로그아웃 실패',
                         data: { error },
@@ -243,7 +242,7 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
                 const clearSuccess = await clearStorage(t('clear-storage'));
 
                 if (clearSuccess) {
-                    addBreadcrumb({
+                    menuLogger('breadcrumb:', {
                         category: 'auth',
                         message: '로그아웃 성공: 스토리지 정리 완료',
                     });
@@ -253,7 +252,7 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
                     window.location.href = '/welcome';
                 } else {
                     // 스토리지 정리 실패 시 다시 시도
-                    addBreadcrumb({
+                    menuLogger('breadcrumb:', {
                         category: 'auth',
                         message: '로그아웃 실패: 스토리지 정리 실패, 다시 시도',
                         level: 'warning',
@@ -263,7 +262,7 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
                     const secondAttempt = await clearStorage(t('clear-storage'));
 
                     if (secondAttempt) {
-                        addBreadcrumb({
+                        menuLogger('breadcrumb:', {
                             category: 'auth',
                             message: '로그아웃 성공: 두 번째 시도 성공',
                         });
@@ -272,7 +271,7 @@ export function LoginedMenu({ onClose }: LoginedMenuPropsType) {
                         window.location.href = '/welcome';
                     } else {
                         // 두 번째 시도도 실패하면 강제 리다이렉트
-                        addBreadcrumb({
+                        menuLogger('breadcrumb:', {
                             category: 'auth',
                             message: '로그아웃 실패: 두 번째 시도도 실패, 강제 리다이렉트',
                             level: 'error',

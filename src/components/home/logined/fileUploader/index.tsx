@@ -25,7 +25,6 @@ import { useTranslations } from 'next-intl';
 import './style.css';
 import { ulid } from 'ulid';
 import { fetchUserId, createClient } from '@/supabase/utils/client';
-import { captureException } from '@sentry/nextjs';
 import { useNavigation } from '@/hooks/useNavigation';
 import {
     IMAGE_SHRINK_POLICY_HEIGHT,
@@ -139,7 +138,7 @@ async function fetchCaption(id: string, imageUrl: string, signal?: AbortSignal) 
 
                     // 실제 JSON 파싱 실패는 서버 오류로 처리
                     console.error('HTTP 429 응답의 JSON 파싱 실패:', parseError);
-                    captureException(parseError, {
+                    console.error('File uploader error:',parseError, {
                         tags: {
                             api: 'captioning',
                             status: 429,
@@ -285,7 +284,7 @@ export default memo(function FileUploader() {
                 setUserId(id);
             } catch (error) {
                 uploaderLogger('useEffect - Error in fetchUserId', { error });
-                captureException(error);
+                console.error('File uploader error:',error);
                 uploaderLogger('Error fetching user ID', error);
             }
         })();
@@ -722,7 +721,7 @@ export default memo(function FileUploader() {
             })
             .catch((error) => {
                 uploaderLogger('handleDoneClick - Error creating content', { error });
-                captureException(error);
+                console.error('File uploader error:',error);
                 openSnackbar({
                     message: t('error-creating-content'),
                 });

@@ -1,16 +1,14 @@
 'use client';
 import { syncLogger } from '@/debug/sync';
 import { database } from '@/watermelondb';
-import { addBreadcrumb, captureException } from '@sentry/nextjs';
 // @ts-ignore
 import { parse } from 'cookie';
 /**
- * clearStorage 함수는 localStorage, cookie, WatermelonDB, 캐시 스토리지, 그리고 서비스 워커를 정리합니다.
+ * clearStorage 함수는 localStorage, cookie, WatermelonDB, 캐시 스토리지를 정리합니다.
  * @param {string | null} why - 정리 이유
  * @param {boolean} clearCache - 캐시 스토리지를 정리할지 여부
- * @param {boolean} clearServiceWorker - 서비스 워커를 정리할지 여부
+ * @param {boolean} clearServiceWorker - 레거시 서비스 워커를 정리할지 여부 (이전 PWA 사용자를 위해 유지)
  * @returns {Promise<boolean>} - 정리 성공 여부
- * clearCache, clearServiceWorker는 서비스 워커가 문제가 생겼을 경우 삭제 될 수 있게 하기 위해 추가되었습니다.
  */
 export async function clearStorage(
     why: string | null = null,
@@ -22,11 +20,6 @@ export async function clearStorage(
     const stack = new Error().stack;
     const caller = stack?.split('\n')[2]?.trim();
     syncLogger(`clearStorage 직전 호출자: ${caller}`);
-    addBreadcrumb({
-        type: 'auth',
-        message: 'clearStorage가 호출 되었습니다.',
-        data: { caller, why },
-    });
     if (typeof window === 'undefined') return false;
 
     let success = true;
@@ -67,7 +60,7 @@ export async function clearStorage(
             });
         } catch (error) {
             syncLogger(`Error cleaning up WatermelonDB: ${error}`);
-            captureException(error); // 에러 로그 추가
+            // 에러 로그
             success = false;
         }
 
@@ -83,7 +76,7 @@ export async function clearStorage(
                     syncLogger('All caches cleared successfully');
                 } catch (error) {
                     syncLogger(`Error clearing caches: ${error}`);
-                    captureException(error); // 에러 로그 추가
+                    // 에러 로그
                     success = false;
                 }
             }
@@ -101,7 +94,7 @@ export async function clearStorage(
                     syncLogger('All service workers unregistered successfully');
                 } catch (error) {
                     syncLogger(`Error unregistering service workers: ${error}`);
-                    captureException(error); // 에러 로그 추가
+                    // 에러 로그
                     success = false;
                 }
             }
@@ -113,7 +106,7 @@ export async function clearStorage(
             sessionStorage.clear();
         } catch (error) {
             syncLogger(`Error clearing sessionStorage: ${error}`);
-            captureException(error);
+            // 에러는 이미 syncLogger로 로깅됨
             success = false;
         }
 
@@ -121,7 +114,7 @@ export async function clearStorage(
         return success;
     } catch (error) {
         syncLogger(`Unexpected error in clearStorage: ${error}`);
-        captureException(error);
+        // 에러는 이미 syncLogger로 로깅됨
         return false;
     }
 }
@@ -135,7 +128,7 @@ export async function clearOnlyWatermelonDB() {
         return true;
     } catch (error) {
         syncLogger(`Error clearing Watermelon DB: ${error}`);
-        captureException(error);
+        // 에러는 이미 syncLogger로 로깅됨
         return false;
     }
 }

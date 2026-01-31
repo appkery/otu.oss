@@ -10,7 +10,6 @@ import { folderLogger } from '@/debug/folder';
 import { useNavigation } from '@/hooks/useNavigation';
 import { getFolders } from '@/functions/folder';
 import { list as listPages } from '@/watermelondb/control/Page';
-import * as Sentry from '@sentry/nextjs';
 import {
     FolderOpenIcon,
     PencilSquareIcon,
@@ -111,7 +110,7 @@ export function FolderDetailPageList() {
                     });
                 } catch (error) {
                     folderLogger('폴더 정보 로드 실패', { folderId, error });
-                    Sentry.captureException(error);
+                    console.error('Folder detail error:',error);
                     setFolder(null);
                 }
             };
@@ -227,7 +226,7 @@ export function FolderDetailPageList() {
             folderLogger('폴더명 저장 완료', { folderId: folder.id });
         } catch (error) {
             folderLogger('폴더명 저장 실패', { folderId: folder?.id, error });
-            Sentry.captureException(error);
+            console.error('Folder detail error:',error);
         } finally {
             setIsSavingFolder(false);
         }
@@ -271,7 +270,7 @@ export function FolderDetailPageList() {
                         severity: 'error',
                     });
                     folderLogger('폴더 삭제 실패', { folderId: folder?.id, error });
-                    Sentry.captureException(error);
+                    console.error('Folder detail error:',error);
                 } finally {
                     setIsDeletingFolder(false);
                 }

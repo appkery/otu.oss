@@ -1,5 +1,4 @@
 import { authLogger } from '@/debug/auth';
-import { addBreadcrumb, captureMessage } from '@sentry/nextjs';
 import { decode } from 'js-base64';
 
 export function getCookiesAsObjects() {
@@ -42,7 +41,7 @@ export const deleteInvalidCookies: deleteInvalidCookiesType = (
         const numB = parseInt(b.name.split('.').pop() || '0', 10);
         return numA - numB;
     });
-    addBreadcrumb({
+    authLogger('breadcrumb:', {
         category: 'auth',
         message: 'sortedCookies',
         level: 'info',
@@ -68,7 +67,7 @@ export const deleteInvalidCookies: deleteInvalidCookiesType = (
                 authLogger('deleteInvalidCookiesType/after JSON.parse');
                 validFormatEndIndex = i;
                 authLogger('deleteInvalidCookiesType/validFormatEndIndex', validFormatEndIndex);
-                addBreadcrumb({
+                authLogger('breadcrumb:', {
                     category: 'auth',
                     message: '쿠키 포맷 검사',
                     level: 'info',
@@ -85,7 +84,7 @@ export const deleteInvalidCookies: deleteInvalidCookiesType = (
                     '   쿠키 파싱 가능성 테스트 결과 실패 - 이 메시지는 쿠키의 파싱 가능성을 체크하기 위한 것입니다. 정상적인 체크 과정이니 무시하세요.',
                     error.message
                 );
-                addBreadcrumb({
+                authLogger('breadcrumb:', {
                     category: 'auth',
                     message: '쿠키 파싱 가능성 실패',
                     level: 'info',
@@ -103,7 +102,7 @@ export const deleteInvalidCookies: deleteInvalidCookiesType = (
                 authLogger(
                     'deleteInvalidCookiesType/정상적인 인증쿠키가 아닙니다. 전체 삭제해야 합니다만, 현재는 이에 대한 구현이 되어 있지 않습니다.'
                 );
-                captureMessage(
+                console.error(
                     '정상적인 인증쿠키가 아닙니다. 전체 삭제해야 합니다만, 현재는 이에 대한 구현이 되어 있지 않습니다. 이 문제가 보고되면 조사하세요:' +
                         combinedValue,
                     {
@@ -118,7 +117,7 @@ export const deleteInvalidCookies: deleteInvalidCookiesType = (
             // delete cookies
             for (let j = validFormatEndIndex + 1; j < sortedCookies.length; j++) {
                 deleteCallback(sortedCookies[j].name);
-                addBreadcrumb({
+                authLogger('breadcrumb:', {
                     category: 'auth',
                     message: '유효하지 않은 쿠기 삭제',
                     level: 'info',

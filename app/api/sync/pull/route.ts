@@ -1,5 +1,4 @@
 import { syncLogger } from '@/debug/sync';
-import { captureException } from '@sentry/nextjs';
 import { createClient } from '@/supabase/utils/server';
 export const maxDuration = 300;
 
@@ -471,7 +470,6 @@ export async function GET(req: Request) {
             stack: error.stack?.split('\n').slice(0, 3),
         });
         console.error('Supabase query error:', error);
-        captureException(error);
         const body = JSON.stringify({ error: 'Internal Server Error' });
         return new Response(body, {
             status: 500,

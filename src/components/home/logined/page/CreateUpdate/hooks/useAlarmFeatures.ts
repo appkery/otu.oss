@@ -11,7 +11,6 @@ import { ulid } from 'ulid';
 import { communicateWithAppsWithCallback } from '@/components/core/WebViewCommunicator';
 import { checkIsSuperuser } from '@/functions/checkSuperuser';
 import { isProduction } from '@/utils/environment';
-import { addBreadcrumb, captureException } from '@sentry/nextjs';
 import { database } from '@/watermelondb';
 import { Q } from '@nozbe/watermelondb';
 import { sync } from '@/watermelondb/sync';
@@ -187,7 +186,7 @@ export function useAlarmFeatures({ title, body, pageId }: UseAlarmFeaturesProps)
                         error: upsertError.message,
                         userId: userId.substring(0, 8) + '...',
                     });
-                    captureException(upsertError);
+                    console.error('Alarm feature error:',upsertError);
                 } else {
                     alarmLogger('user_info timezone 업데이트 성공', {
                         userId: userId.substring(0, 8) + '...',

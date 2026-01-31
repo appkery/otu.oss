@@ -7,7 +7,6 @@ import { createServerClient } from '@supabase/ssr';
 import { SupabaseClient } from '@supabase/supabase-js';
 import { cookies } from 'next/headers';
 import { revalidateTag } from 'next/cache';
-import { captureException, setContext } from '@sentry/nextjs';
 
 if (process.env.NEXT_PUBLIC_HOST === undefined) throw new Error('NEXT_PUBLIC_HOST is not defined');
 
@@ -206,20 +205,16 @@ export async function POST(req: Request) {
             }
         }
 
-        // 개발환경에서 임베딩을 즉시 실행되지 않도록 하는 코드
+        // 개발환경에서 임베딩을 즉시 실행 (사용자 인증 기반)
+        // 참고: embedding-scheduler는 사용자 트리거 방식으로 변경됨 (Cron 의존성 제거)
+        // 개발환경에서는 쿠키를 전달하여 인증을 처리합니다.
         // if (false && process.env.NODE_ENV === "development") {
         if (process.env.NODE_ENV === 'development') {
             syncLogger(
-                '개발환경에서는 cron을 작동시키는 대신 즉시 실행합니다. 수정의 경우 지정된 시간 이후에 실행됩니다.'
+                '개발환경에서는 즉시 임베딩을 실행합니다. 수정의 경우 지정된 시간 이후에 실행됩니다.'
             );
-            fetch(`${process.env.NEXT_PUBLIC_HOST}/api/ai/embedding-scheduler`, {
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${process.env.CRON_SECRET}`,
-                },
-            })
-                .then((resp) => resp.json())
-                .then((result) => {});
+            // 참고: 클라이언트 측에서 직접 호출하거나, 여기서는 job_queue에 작업만 등록됨
+            // 실제 임베딩 처리는 클라이언트에서 /api/ai/embedding-scheduler?user_id=xxx 호출 시 수행
         }
 
         const body = JSON.stringify({ success: true });
@@ -229,7 +224,7 @@ export async function POST(req: Request) {
     } catch (error: any) {
         syncLogger('Sync push error:', error);
         // Sentry에 오류 및 컨텍스트 정보 전송
-        setContext('sync_push_error', {
+        syncLogger('sync_push_error', {
             user_id: user_id,
             lastPulledAt: lastPulledAt,
             pageCount: {
@@ -255,7 +250,7 @@ export async function POST(req: Request) {
             isDevelopment: process.env.NODE_ENV === 'development',
         });
 
-        captureException(error);
+        console.error('Sync push error:', error);
         syncLogger('동기화 푸시 중 오류 발생:', error);
 
         const body = JSON.stringify({ error: error.message });
@@ -279,12 +274,12 @@ async function isExistingJobs(
         .eq('payload', updatedItemId);
 
     if (error) {
-        setContext('job_queue_error', {
+        syncLogger('job_queue_error', {
             user_id: user_id,
             updatedItemId: updatedItemId,
             operation: 'select_existing_jobs',
         });
-        captureException(error);
+        console.error('Sync push error:', error);
         throw new Error('큐를 생성하는 과정에서 오류가 발생했습니다:' + error);
     }
 
@@ -310,12 +305,12 @@ async function updateExistingJob(
         .eq('id', jobId);
 
     if (error) {
-        setContext('job_update_error', {
+        syncLogger('job_update_error', {
             jobId: jobId,
             minutesOffset: minutesOffset,
             operation: 'update_existing_job',
         });
-        captureException(error);
+        console.error('Sync push error:', error);
         syncLogger('Error updating job:', error);
         throw error;
     }
@@ -342,13 +337,13 @@ async function updateNoExistJob(
     });
 
     if (error) {
-        setContext('job_insert_error', {
+        syncLogger('job_insert_error', {
             jobName: jobName,
             payload: payload,
             minutesOffset: minutesOffset,
             operation: 'insert_new_job',
         });
-        captureException(error);
+        console.error('Sync push error:', error);
         syncLogger('Error inserting new job:', error);
         throw error;
     }
@@ -388,7 +383,7 @@ async function createPage(supabase, newItem, lastPulledAt, user_id) {
     });
 
     if (result.error) {
-        setContext('page_create_error', {
+        syncLogger('page_create_error', {
             page_id: newItem.id,
             user_id: user_id,
             operation: 'create_page',
@@ -396,7 +391,7 @@ async function createPage(supabase, newItem, lastPulledAt, user_id) {
         });
         // 23505 에러는 상위에서 처리하므로 throw하지 않음
         if (result.error.code !== '23505') {
-            captureException(result.error);
+            console.error('Sync push error:', result.error);
             throw result.error;
         }
     }
@@ -426,12 +421,12 @@ async function updatePage(supabase, updatedItem, lastPulledAt, user_id) {
         .match({ id: updatedItem.id });
 
     if (updateError) {
-        setContext('page_update_error', {
+        syncLogger('page_update_error', {
             page_id: updatedItem.id,
             user_id: user_id,
             operation: 'update_page',
         });
-        captureException(updateError);
+        console.error('Update error:', updateError);
         throw updateError;
     }
 
@@ -475,7 +470,7 @@ async function createFolder(supabase, newItem, lastPulledAt, user_id) {
     });
 
     if (result.error) {
-        setContext('folder_create_error', {
+        syncLogger('folder_create_error', {
             folder_id: newItem.id,
             user_id: user_id,
             operation: 'create_folder',
@@ -483,7 +478,7 @@ async function createFolder(supabase, newItem, lastPulledAt, user_id) {
         });
         // 23505 에러는 상위에서 처리하므로 throw하지 않음
         if (result.error.code !== '23505') {
-            captureException(result.error);
+            console.error('Sync push error:', result.error);
             throw result.error;
         }
     }
@@ -513,12 +508,12 @@ async function updateFolder(supabase, updatedItem, lastPulledAt, user_id) {
         .match({ id: updatedItem.id });
 
     if (updateError) {
-        setContext('folder_update_error', {
+        syncLogger('folder_update_error', {
             folder_id: updatedItem.id,
             user_id: user_id,
             operation: 'update_folder',
         });
-        captureException(updateError);
+        console.error('Update error:', updateError);
         throw updateError;
     }
 
@@ -573,7 +568,7 @@ async function createAlarm(supabase, newItem, lastPulledAt, user_id) {
             error: result.error.message,
             error_code: result.error.code,
         });
-        setContext('alarm_create_error', {
+        syncLogger('alarm_create_error', {
             alarm_id: newItem.id,
             user_id: user_id,
             operation: 'create_alarm',
@@ -581,7 +576,7 @@ async function createAlarm(supabase, newItem, lastPulledAt, user_id) {
         });
         // 23505 에러는 상위에서 처리하므로 throw하지 않음
         if (result.error.code !== '23505') {
-            captureException(result.error);
+            console.error('Sync push error:', result.error);
             throw result.error;
         }
     }
@@ -615,12 +610,12 @@ async function updateAlarm(supabase, updatedItem, lastPulledAt, user_id) {
             user_id: user_id,
             error: updateError.message,
         });
-        setContext('alarm_update_error', {
+        syncLogger('alarm_update_error', {
             alarm_id: updatedItem.id,
             user_id: user_id,
             operation: 'update_alarm',
         });
-        captureException(updateError);
+        console.error('Update error:', updateError);
         throw updateError;
     }
 

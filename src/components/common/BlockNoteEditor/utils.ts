@@ -1,7 +1,6 @@
 import { Block, BlockNoteEditor } from '@blocknote/core';
 import { editorBlockNoteLogger, editorViewLogger } from '@/debug/editor';
 import { blocknoteLogger } from '@/debug/blocknote';
-import * as Sentry from '@sentry/nextjs';
 
 // BlockNote 블록 타입과 HTML 태그 매핑 정의
 const BLOCK_TYPE_TO_HTML_TAGS: Record<string, string[]> = {

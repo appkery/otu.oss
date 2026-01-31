@@ -1,7 +1,6 @@
 import { webviewLogger } from '@/debug/webview';
 import { openSnackbarState, themeModeState } from '@/lib/jotai';
 import { createClient } from '@/supabase/utils/client';
-import { captureException } from '@sentry/nextjs';
 import { useAtom, useSetAtom } from 'jotai';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
@@ -111,7 +110,7 @@ export function communicateWithAppsWithCallback(funcName: string, data?: any, ca
         }
     } catch (error) {
         console.error(`WebView communication error for "${funcName}":`, error);
-        captureException(error); // Sentry에 에러 보고
+        console.error('WebViewCommunicator error:',error); // Sentry에 에러 보고
     }
 }
 

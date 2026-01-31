@@ -2,7 +2,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import * as Sentry from '@sentry/nextjs';
 import { useTranslations } from 'next-intl';
 import Loading from '../(ui)/loading';
 import '@/app/globals.css';
@@ -25,8 +24,8 @@ export default function LoginCallbackPage() {
             const errorDescription = params.get('error_description') || 'Authentication failed';
             setError(t('callback-error'));
 
-            // 1. Sentry에 오류를 보고합니다.
-            Sentry.captureException(new Error(errorDescription));
+            // 1. 오류를 콘솔에 로깅합니다.
+            console.error('Login callback error:', errorDescription);
         }
     }, [t]);
 

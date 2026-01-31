@@ -4,7 +4,6 @@ import { ipAddress } from '@vercel/functions';
 // @ts-ignore
 import { authLogger } from '@/debug/auth';
 import { utf8Logger, cookieLogger } from '@/debug/middleware';
-import { addBreadcrumb, captureMessage, setContext, setTag, setUser } from '@sentry/nextjs';
 import { cookies } from 'next/headers';
 import { reportValue } from '@vercel/flags';
 
@@ -127,12 +126,7 @@ function optimizeTokenFragments(cookies: Array<{ name: string; value: string }>)
 export async function updateSession(request: NextRequest) {
     const debug = process.env.DEBUG?.includes('auth') || false;
     const cookieStore = await cookies();
-    addBreadcrumb({
-        message: 'updateSession',
-        data: {
-            path: request.nextUrl.pathname,
-        },
-    });
+    authLogger('updateSession', { path: request.nextUrl.pathname });
     authLogger('debug', process.env.DEBUG, debug);
 
     let supabaseResponse = NextResponse.next({
@@ -159,17 +153,6 @@ export async function updateSession(request: NextRequest) {
                         cookieLogger('getAll - 최적화 후 쿠키 개수:', optimizedData.length);
 
                         authLogger('getAll', optimizedData);
-                        addBreadcrumb({
-                            message: 'getAll',
-                            data: {
-                                cookie: optimizedData,
-                                optimization: {
-                                    original: rawData.length,
-                                    optimized: optimizedData.length,
-                                    reduced: rawData.length - optimizedData.length,
-                                },
-                            },
-                        });
                         cookieLogger('getAll 완료 - 최적화된 쿠키 반환');
                         return optimizedData;
                     } catch (error) {
@@ -190,14 +173,6 @@ export async function updateSession(request: NextRequest) {
                             request,
                         });
                         cookiesToSet.forEach(({ name, value, options }) => {
-                            addBreadcrumb({
-                                message: 'setAll',
-                                data: {
-                                    name,
-                                    value,
-                                    options,
-                                },
-                            });
                             return supabaseResponse.cookies.set(name, value, options);
                         });
                         cookieLogger('setAll 완료');
@@ -252,15 +227,11 @@ export async function updateSession(request: NextRequest) {
         cookieLogger(`🎉 모든 더미 조각 삭제 완료!`);
     }
 
-    // 로그인 풀림 이슈 디버깅을 위한 브레드크럼프
+    // 로그인 풀림 이슈 디버깅
     if (!user.data.user) {
-        addBreadcrumb({
-            message: 'User is not authenticated in middleware',
-            data: {
-                'user.data.user': user.data.user,
-                'user.error': user.error,
-            },
-            level: 'warning',
+        authLogger('User is not authenticated in middleware', {
+            'user.data.user': user.data.user,
+            'user.error': user.error,
         });
 
         // Supabase 인증 토큰 쿠키가 있지만 사용자가 없는 경우, 쿠키를 삭제하여 무한 리디렉션을 방지합니다.
@@ -297,17 +268,6 @@ export async function updateSession(request: NextRequest) {
         // searchQuery를 logStr로 설정합니다.
         const logStr = `OTUID - ${otuidCookie.value}`;
         console.log(logStr);
-        const url = `https://vercel.com/opentutorials/otuai/logs?slug=app-future&slug=en-US&slug=opentutorials&slug=otuai&slug=logs&page=1&timeline=maximum&startDate=${startDate}&endDate=${endDate}&live=false&searchQuery=${encodeURIComponent(logStr)}&`;
-
-        setContext('vercel log by userId', {
-            url,
-            description:
-                'user id와 일치하는 로그를 검색합니다. 검색이 안되면 검색어에서 공백을 제거해주세요. ',
-        });
-        setUser({
-            id: otuidCookie.value,
-            ip_address: getUserIp(request),
-        });
     }
 
     // 로그인되어 있지 않고 OTUID 쿠키가 있는 경우
@@ -315,10 +275,7 @@ export async function updateSession(request: NextRequest) {
         // 로그인 풀림 이슈 보고 및 OTUID 쿠키 삭제
         reportValue('auth_terminated', true);
         const cookiesAll = await cookieStore.getAll();
-        captureMessage('미들웨어에서 로그인 풀림이 발생했습니다.', {
-            level: 'fatal',
-            extra: { cookies: cookiesAll },
-        });
+        console.error('미들웨어에서 로그인 풀림이 발생했습니다.', { cookies: cookiesAll });
         supabaseResponse.cookies.set('OTUID', '', {
             maxAge: 0,
             path: '/',

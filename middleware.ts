@@ -1,6 +1,5 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { updateSession } from './supabase/utils/middleware';
-import { captureException, setContext, setTag } from '@sentry/nextjs';
 import { generateIdentifier } from './src/functions/logHeader';
 import { reportValue } from '@vercel/flags';
 import { middleWareLogger } from './src/debug/middleware';
@@ -11,18 +10,6 @@ export async function middleware(req: NextRequest) {
         const requestId = generateIdentifier();
         middleWareLogger(`MIDDLEWARE : ${requestId} → ${new URL(req.url).pathname}`);
         reportValue('requestId', requestId);
-        setTag('requestId', requestId);
-        setContext('vercel log by requestId', {
-            url: `https://vercel.com/opentutorials/otuai/logs?slug=app-future&slug=en-US&slug=opentutorials&slug=otuai&slug=logs&page=1&searchQuery=${requestId}&timeline=maximum`,
-            description:
-                'requestId와 일치하는 로그 URL로 이동합니다. 검색이 안되면 검색어에서 공백을 제거해주세요. ',
-        });
-        const now = Date.now();
-        const threeMinutesAgo = now - 3 * 60 * 1000;
-        setContext('Vercel logs from the last 3 minutes', {
-            url: `https://vercel.com/opentutorials/otuai/logs?slug=app-future&slug=en-US&slug=opentutorials&slug=otuai&slug=logs&page=1&timeline=absolute&startDate=${threeMinutesAgo}&endDate=${now}&live=false`,
-            description: '현재 시점으로부터 3분 전까지의 로그를 검색합니다.',
-        });
         if (req.nextUrl.pathname === '/') {
             const requestedLang = req.nextUrl.searchParams.get('lang');
             if (requestedLang) {
@@ -61,7 +48,7 @@ export async function middleware(req: NextRequest) {
         return response;
     } catch (e) {
         const errorUrl = new URL('/error', req.url);
-        captureException(e);
+        console.error('Middleware error:', e);
         return NextResponse.redirect(errorUrl);
     }
 }

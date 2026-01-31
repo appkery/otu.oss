@@ -1,7 +1,6 @@
 import { alarmLogger } from '@/debug/alarm';
 import errorResponse, { successResponse } from '@/functions/response';
 import { createSuperClient } from '@/supabase/utils/super';
-import { captureException, flush } from '@sentry/nextjs';
 import { ulid } from 'ulid';
 
 export const runtime = 'nodejs';
@@ -74,32 +73,19 @@ export async function GET(request: Request) {
     };
 
     try {
-        // 인증 체크
-        if (process.env.VERCEL_ENV && ['production', 'preview'].includes(process.env.VERCEL_ENV)) {
-            const authHeader = request.headers.get('authorization');
-            if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-                return errorResponse(
-                    { status: 401, message: 'Unauthorized' },
-                    new Error('Unauthorized')
-                );
-            }
-        }
-
         // 스케줄러 실행
         const scheduler = new ReminderScheduler(config);
         await scheduler.schedule();
 
-        await flush(2000);
         return successResponse({
             status: 200,
             message: 'Scheduler executed successfully',
             meta: { requestId },
         });
     } catch (error) {
-        captureException(error);
+        console.error('Scheduler error:', error);
         alarmLogger(requestId, '스케줄러 에러 발생', { error });
 
-        await flush(2000);
         return errorResponse(
             {
                 status: 500,
