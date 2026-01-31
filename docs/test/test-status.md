@@ -20,7 +20,7 @@
 
 ### 1. 훅 테스트 (8개)
 
-**`hooks/useReminderList.test.tsx`**
+**`src/hooks/useReminderList.test.tsx`**
 
 - 리마인더 목록 관리 훅의 전체 라이프사이클 테스트
 - 초기 로드, 페이지네이션, 새로고침, 에러 처리 검증
@@ -97,7 +97,7 @@
 
 #### Middleware API (3개) - 자체 테스트 시스템
 
-**위치**: `test/middleware-webhook-exclusion.test.js`
+**위치**: `src/test/middleware-webhook-exclusion.test.js`
 
 > **미들웨어 제외 검증**: webhook 엔드포인트들이 미들웨어 처리에서 제외되었는지 확인
 
@@ -131,21 +131,21 @@ npm run test:middleware
 - `setToFree.test.ts` (7개) - FREE 플랜 전환, 필드 초기화
 - `get.test.ts` (6개) - 사용량 정보 조회, 에러 케이스
 
-**위치**: `functions/usage/__tests__/*.test.ts`
+**위치**: `src/functions/usage/__tests__/*.test.ts`
 
 **통합 테스트** (5개):
 
-- `test/usage-service.integration.test.ts` - 실제 DB 연동 사용량 할당량 검증
+- `src/test/usage-service.integration.test.ts` - 실제 DB 연동 사용량 할당량 검증
 - 무료/유료 플랜별 한도 초과 시나리오
 - increment_quota RPC 함수 검증
 
 **테스트 케이스 정의**:
 
-- `test/usage-quota.case.ts` - 6개 시나리오 (1개 스킵)
+- `src/test/usage-quota.case.ts` - 6개 시나리오 (1개 스킵)
 
 #### WatermelonDB (5개)
 
-- `watermelondb/sync.test.ts`
+- `src/watermelondb/sync.test.ts`
     - 로컬 DB 동기화 로직
     - 오프라인 데이터 처리
     - 변경사항 추적
@@ -183,7 +183,7 @@ npm run test:middleware
 - `usage` - 사용량 추적 로그
 - `test` - 테스트 관련 로그
 - `editor` - 에디터 관련 로그
-- 기타 45개 이상의 카테고리 (`/debug` 디렉토리 참조)
+- 기타 45개 이상의 카테고리 (`src/debug/` 디렉토리 참조)
 
 ### 테스트 시 로거 활성화 방법
 
@@ -222,7 +222,7 @@ localStorage.debug = 'alarm,sync'
 
 ### 로거 구현
 
-모든 로거는 `/debug` 디렉토리에 정의되어 있으며, [debug](https://www.npmjs.com/package/debug) 라이브러리를 사용합니다. 각 로거는 `console.log.bind(console)`로 바인딩되어 색상과 타임스탬프를 포함한 포맷팅된 출력을 제공합니다.
+모든 로거는 `src/debug/` 디렉토리에 정의되어 있으며, [debug](https://www.npmjs.com/package/debug) 라이브러리를 사용합니다. 각 로거는 `console.log.bind(console)`로 바인딩되어 색상과 타임스탬프를 포함한 포맷팅된 출력을 제공합니다.
 
 예시:
 
@@ -270,7 +270,7 @@ alarmLogger.log = console.log.bind(console);
 
 - observe 로직이 테스트 데이터를 덮어쓸 수 있음
 - 반드시 WatermelonDB mock 추가 필요
-- 참고: `hooks/useReminderList.test.tsx:19-34`
+- 참고: `src/hooks/useReminderList.test.tsx:19-34`
 
 ### 타임아웃 설정
 
@@ -309,8 +309,8 @@ alarmLogger.log = console.log.bind(console);
 
 **관련 파일**:
 
-- `test/usage-service.integration.test.ts` - Jest 통합 테스트
-- `test/usage-quota.case.ts` - 테스트 케이스 정의
+- `src/test/usage-service.integration.test.ts` - Jest 통합 테스트
+- `src/test/usage-quota.case.ts` - 테스트 케이스 정의
 
 ---
 

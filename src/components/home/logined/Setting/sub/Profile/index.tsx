@@ -222,7 +222,7 @@ export default function Profile() {
                 timezone: profile?.timezone || Intl.DateTimeFormat().resolvedOptions().timeZone,
             });
         } catch (error) {
-            console.error('Profile error:',error);
+            console.error('Profile error:', error);
             console.error('Error loading profile:', error);
             // 에러 발생 시에도 기본 타임존 설정
             setTimezone(Intl.DateTimeFormat().resolvedOptions().timeZone);
@@ -269,7 +269,7 @@ export default function Profile() {
                 vertical: 'bottom',
             });
         } catch (error) {
-            console.error('Profile error:',error);
+            console.error('Profile error:', error);
             console.error('Error saving profile:', error);
         }
     };

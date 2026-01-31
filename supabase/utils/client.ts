@@ -47,7 +47,9 @@ export const fetchUserId = async (context?: string) => {
     try {
         const { data: sessionData, error: sessionError } = await supabase.auth.getSession();
         if (sessionError) {
-            console.error('Session error:', sessionError.message, { context: context || 'unknown' });
+            console.error('Session error:', sessionError.message, {
+                context: context || 'unknown',
+            });
             throw new Error(`Session error: ${sessionError.message}`);
         }
         const cookiesInfo = getCookiesInfo();

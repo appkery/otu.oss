@@ -21,7 +21,6 @@
 | Vercel     | 웹 애플리케이션 호스팅         | 무료 (Hobby) / $20/월 (Pro)    |
 | Supabase   | PostgreSQL 데이터베이스 + 인증 | 무료 (Free) / $25/월 (Pro)     |
 | OpenAI     | AI 기능 (선택)                 | 사용량 기반                    |
-| Cohere     | 임베딩/RAG 기능 (선택)         | 무료 (Trial) / 사용량 기반     |
 | Uploadcare | 이미지 업로드 (선택)           | 무료 (Free) / $75/월 (Premium) |
 
 ### 로컬 환경 확인
@@ -211,11 +210,9 @@ NEXT_PUBLIC_SOCIAL_LOGIN_REDIRECT_TO=https://your-domain.com
 # AI 기능 활성화
 ENABLE_AI=true
 
-# OpenAI API
+# OpenAI API (개발 환경에서 필요)
 OPENAI_API_KEY=sk-<your-openai-key>
-
-# Cohere API (임베딩/RAG용)
-COHERE_API_KEY=<your-cohere-key>
+# 프로덕션에서는 Vercel AI Gateway를 통해 AI 및 임베딩 기능이 제공됩니다.
 ```
 
 #### Sentry 환경 변수 (선택)
@@ -269,8 +266,7 @@ UPLOADCARE_PRIVATE_KEY=<your-private-key>
 | `NEXT_PUBLIC_HOST`                     | O                | 배포된 앱의 URL                                  |
 | `NEXT_PUBLIC_SOCIAL_LOGIN_REDIRECT_TO` | O                | 소셜 로그인 후 리디렉션 URL                      |
 | `ENABLE_AI`                            | -                | AI 기능 활성화 (`true`/`false`, 기본값: `false`) |
-| `OPENAI_API_KEY`                       | AI 사용 시       | OpenAI API 키                                    |
-| `COHERE_API_KEY`                       | RAG 사용 시      | Cohere API 키                                    |
+| `OPENAI_API_KEY`                       | AI 사용 시 (개발) | OpenAI API 키 (프로덕션은 Gateway 사용)         |
 | `NEXT_PUBLIC_ENABLE_SENTRY`            | -                | Sentry 활성화 (`true`/`false`, 기본값: `false`)  |
 | `NEXT_PUBLIC_SENTRY_DSN`               | Sentry 사용 시   | Sentry DSN                                       |
 | `SENTRY_AUTH_TOKEN`                    | Sentry 사용 시   | Sentry 인증 토큰                                 |

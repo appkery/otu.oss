@@ -8,7 +8,7 @@
 
 ### BlockNote 에디터
 
-**라이브러리**: BlockNote 0.41.1
+**라이브러리**: BlockNote 0.44.0
 
 - 오픈소스 블록 기반 에디터
 - Notion 스타일의 편집 경험 제공
@@ -254,33 +254,33 @@ const translations = useMemo(
 
 ### 에디터 컴포넌트
 
-- **메인 뷰**: `components/home/logined/page/CreateUpdate/view.tsx`
-- **에디터 UI**: `components/home/logined/page/CreateUpdate/components/EditorUI.tsx`
-- **헤더 영역**: `components/home/logined/page/CreateUpdate/components/HeaderArea.tsx`
+- **메인 뷰**: `src/components/home/logined/page/CreateUpdate/view.tsx`
+- **에디터 UI**: `src/components/home/logined/page/CreateUpdate/components/EditorUI.tsx`
+- **헤더 영역**: `src/components/home/logined/page/CreateUpdate/components/HeaderArea.tsx`
 
 ### 에디터 훅
 
-- **자동저장**: `components/home/logined/page/CreateUpdate/hooks/useAutoSave.ts`
-- **에디터 작업**: `components/home/logined/page/CreateUpdate/hooks/useEditorOperations.ts`
-- **키보드 단축키**: `components/home/logined/page/CreateUpdate/hooks/useKeyboardShortcuts.ts`
+- **자동저장**: `src/components/home/logined/page/CreateUpdate/hooks/useAutoSave.ts`
+- **에디터 작업**: `src/components/home/logined/page/CreateUpdate/hooks/useEditorOperations.ts`
+- **키보드 단축키**: `src/components/home/logined/page/CreateUpdate/hooks/useKeyboardShortcuts.ts`
 
 ### BlockNote 관련
 
-- **래퍼**: `components/common/BlockNoteEditor/BlockNoteWrapper.tsx`
-- **유틸리티**: `components/common/BlockNoteEditor/utils.ts`
-- **슬래시 메뉴**: `components/common/BlockNoteEditor/slashMenu.ts`
+- **래퍼**: `src/components/common/BlockNoteEditor/BlockNoteWrapper.tsx`
+- **유틸리티**: `src/components/common/BlockNoteEditor/utils.ts`
+- **슬래시 메뉴**: `src/components/common/BlockNoteEditor/slashMenu.ts`
 
 ### API
 
 - **자동 제목 생성**: `app/api/ai/titling/route.ts`
-- **제목 생성 함수**: `functions/ai.js` (`fetchTitling`)
+- **제목 생성 함수**: `src/functions/ai.js` (`fetchTitling`)
 
 ## 디버깅
 
 ### 로거
 
-- **에디터 뷰**: `editorViewLogger` (`@/debug/editor`)
-- **BlockNote**: `editorBlockNoteLogger` (`@/debug/editor`)
+- **에디터 뷰**: `editorViewLogger` (`src/debug/editor`)
+- **BlockNote**: `editorBlockNoteLogger` (`src/debug/editor`)
 
 ### 디버깅 활성화
 

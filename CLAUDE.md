@@ -37,10 +37,10 @@
 
 ### 핵심 기술 스택
 
-- Next.js 15.3.5 + React 19.1.0 + TypeScript 5.7.3
+- Next.js 16.0.7 + React 19.1.0 + TypeScript 5.7.3
 - Supabase (DB/Auth), WatermelonDB 0.28.0 (로컬 동기화)
-- Jotai 2.11.3 (상태 관리), Material-UI 7.3.1 (UI)
-- BlockNote 0.41.1 (에디터), OpenAI (AI 기능)
+- Jotai 2.11.3 (상태 관리), Material-UI 7.3.7 (UI)
+- BlockNote 0.44.0 (에디터), OpenAI (AI 기능)
 - React Router DOM 7.8.2 (홈 영역 내비게이션)
 - Vercel AI Gateway (AI API 표준화)
 - **Jest 30.0.4** (테스트 프레임워크) - ⚠️ Vitest 아님!
@@ -77,46 +77,48 @@ app/
 ├── api/                # API 라우트
 │   ├── ai/            # AI 엔드포인트
 │   ├── sync/          # 데이터 동기화
-│   ├── usage/         # 사용량 추적
 │   ├── reminder/      # 알람 관리
 │   ├── share/         # 페이지 공유
 │   ├── setting/       # 설정 관리
-│   └── check/         # 인증 체크
+│   └── check/         # 인증/버전 체크
 ├── auth/              # 인증 관련
 └── share/             # 페이지 공유 UI
 
-components/
-├── Chat/              # AI 채팅
-├── common/            # 공유 컴포넌트
-├── home/              # 홈 페이지 컴포넌트 (레거시)
-├── home2/             # 홈 페이지 컴포넌트 (React Router 기반)
-├── core/              # 핵심 컴포넌트
-└── layout/            # 레이아웃 컴포넌트
-
-functions/
-├── ai/                # AI 서비스
-├── hooks/             # 커스텀 훅
-└── usage/             # 사용량 추적
-
-watermelondb/          # 로컬 DB
-├── model/             # 모델 정의
-├── control/           # DB 제어 로직
-├── schema.ts          # 스키마 정의
-├── sync.ts            # 동기화 로직 (40KB+)
-└── migrations.ts      # 마이그레이션
+src/
+├── components/
+│   ├── Chat/          # AI 채팅
+│   ├── common/        # 공유 컴포넌트
+│   ├── home/          # 홈 페이지 컴포넌트 (레거시)
+│   ├── home2/         # 홈 페이지 컴포넌트 (React Router 기반)
+│   ├── core/          # 핵심 컴포넌트
+│   └── layout/        # 레이아웃 컴포넌트
+│
+├── functions/
+│   ├── ai/            # AI 서비스
+│   ├── hooks/         # 커스텀 훅
+│   └── usage/         # 사용량 추적
+│
+├── watermelondb/      # 로컬 DB
+│   ├── model/         # 모델 정의
+│   ├── control/       # DB 제어 로직
+│   ├── schema.ts      # 스키마 정의
+│   ├── sync.ts        # 동기화 로직 (40KB+)
+│   └── migrations.ts  # 마이그레이션
+│
+└── debug/             # 디버그 로거들
 ```
 
 ### 주요 패턴
 
 #### 상태 관리
 
-- **Jotai**: 전역 상태 (`jotai.ts`)
+- **Jotai**: 전역 상태 (`src/lib/jotai.ts`)
     - 채팅 상태 관리 (`chatOpenState`, `chatState`)
     - AI 응답 및 참조 데이터 관리
     - 다양한 UI 상태 atom들
 - **WatermelonDB**: 로컬 데이터 + 오프라인 동기화
-    - 복잡한 동기화 로직 (`sync.ts` - 40KB+)
-    - 동시 동기화 처리 (`sync.concurrent.test.ts`)
+    - 복잡한 동기화 로직 (`src/watermelondb/sync.ts` - 40KB+)
+    - 동시 동기화 처리 (`src/watermelondb/sync.concurrent.test.ts`)
 - **Supabase**: 서버 데이터 + 실시간
 
 #### 페이지 내비게이션
@@ -215,62 +217,9 @@ return errorResponse(
 
 ### 디버깅
 
-- debug.js 라이브러리 사용 (`/debug/` 디렉토리)
+- debug.js 라이브러리 사용 (`src/debug/` 디렉토리)
 - 클라이언트: `localStorage.debug = 'category'`
 - 서버: `DEBUG='category'`
-
-### Sentry 에러 모니터링
-
-프로젝트는 Sentry를 통해 에러를 추적합니다.
-
-#### Sentry CLI로 에러 조회
-
-```bash
-# 최근 미해결 에러 20개 조회
-npx sentry-cli issues list \
-  --org opentutorials \
-  --project dev-otu-ai \
-  --status unresolved \
-  --max-rows 20 \
-  --auth-token $SENTRY_AUTH_TOKEN
-
-# 특정 기간의 에러만 조회
-npx sentry-cli issues list \
-  --org opentutorials \
-  --project dev-otu-ai \
-  --query "is:unresolved level:error" \
-  --max-rows 50 \
-  --auth-token $SENTRY_AUTH_TOKEN
-
-# 모든 이슈 조회 (해결된 것 포함)
-npx sentry-cli issues list \
-  --org opentutorials \
-  --project dev-otu-ai \
-  --all \
-  --max-rows 100 \
-  --auth-token $SENTRY_AUTH_TOKEN
-```
-
-#### Sentry Auth Token 설정
-
-`.env.local`에 다음 환경 변수 추가:
-
-```bash
-SENTRY_AUTH_TOKEN=your_token_here
-```
-
-**토큰 발급 방법:**
-
-1. https://sentry.io/settings/account/api/auth-tokens/ 접속
-2. "Create New Token" 클릭
-3. 권한 선택: `org:read`, `project:read`, `event:read`
-4. 생성된 토큰을 `.env.local`에 추가
-
-#### Sentry 프로젝트 정보
-
-- **Organization**: `opentutorials`
-- **Project**: `dev-otu-ai`
-- **DSN**: 환경 변수 `NEXT_PUBLIC_SENTRY_DSN` 참조
 
 ### 테스트
 
@@ -281,7 +230,7 @@ SENTRY_AUTH_TOKEN=your_token_here
 - **테스트 작성 시**:
     - `@jest-environment node` 주석 사용 (서버 환경)
     - `@/debug/test`의 `testLogger` 사용
-    - 기존 테스트: `watermelondb/sync.test.ts`, `app/api/sync/__tests__/`
+    - 기존 테스트: `src/watermelondb/sync.test.ts`, `app/api/sync/__tests__/`
 
 ## 중요 개발 노트
 
@@ -304,16 +253,11 @@ SENTRY_AUTH_TOKEN=your_token_here
 NEXT_PUBLIC_SUPABASE_URL=
 NEXT_PUBLIC_SUPABASE_ANON_KEY=
 SUPABASE_SERVICE_ROLE_KEY=
-NEXT_PUBLIC_SENTRY_DSN=
-SENTRY_AUTH_TOKEN=              # Sentry CLI 에러 조회용
 
 # AI 설정 (선택)
 ENABLE_AI=false                 # AI 기능 활성화 여부 (true: 활성화, false: 비활성화, 기본값 false)
 OPENAI_API_KEY=                 # ENABLE_AI=true일 때 필요 (개발 환경)
 # 프로덕션에서는 Vercel AI Gateway를 통해 AI 및 임베딩 기능이 제공됩니다.
-
-# Sentry 설정
-NEXT_PUBLIC_ENABLE_SENTRY=false # Sentry 활성화 여부 (true: 활성화, false: 비활성화, 기본값 false)
 
 # 디버그 설정 (선택)
 # DEBUG=                        # 기본값 비활성화 (예: sync, chat, editor, alarm, * 전체)
@@ -328,7 +272,7 @@ NEXT_PUBLIC_ENABLE_SENTRY=false # Sentry 활성화 여부 (true: 활성화, fals
 
 ### WatermelonDB 동기화
 
-- **복잡한 동기화 시스템**: `watermelondb/sync.ts` (40KB+)
+- **복잡한 동기화 시스템**: `src/watermelondb/sync.ts` (40KB+)
 - **동시 동기화 처리**: 대기열 방식으로 race condition 방지 및 순차 처리
 - **증분 동기화**: `gt` (초과) 연산자로 중복 방지
 - **라우트 진입 동기화**: 특정 페이지 진입 시 자동 동기화 트리거

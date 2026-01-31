@@ -114,7 +114,7 @@ const useEruda = () => {
                         statsMonitor.current.start();
                     } catch (error) {
                         console.error('Failed to load stats.js:', error);
-                        console.error('Eruda error:',error);
+                        console.error('Eruda error:', error);
                     }
                 } else {
                     statsMonitor.current.start();
@@ -148,7 +148,7 @@ const useEruda = () => {
                 removeEruda();
             }
         } catch (e) {
-            console.error('Eruda error:',e);
+            console.error('Eruda error:', e);
         }
 
         // 컴포넌트 언마운트 시 정리

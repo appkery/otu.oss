@@ -66,7 +66,7 @@ AI 채팅에서 사용자 질문에 대한 컨텍스트를 제공하기 위해 3
 
 **검색 프로세스**:
 
-1. 사용자 질문을 Cohere API로 임베딩 (`search_query` 타입)
+1. 사용자 질문을 임베딩 (개발: OpenAI, 프로덕션: Vercel AI Gateway)
 2. PostgreSQL `match_documents` 함수 호출
 3. 벡터 유사도 계산 (Cosine Similarity)
 4. 유사도 0.55 이상 결과만 반환
@@ -118,26 +118,26 @@ AI는 검색된 참조 문서를 컨텍스트로 받아 답변을 생성합니�
 
 ### UI 컴포넌트
 
-- **입력창**: `components/Chat/Root/Input/view.tsx`
+- **입력창**: `src/components/Chat/Root/Input/view.tsx`
     - RAG 모드 Select 컴포넌트
-- **검색 결과**: `components/Chat/Root/Conversation/index.tsx`
+- **검색 결과**: `src/components/Chat/Root/Conversation/index.tsx`
     - `SimilarityEndMessage` 컴포넌트
 - **AI 응답**: `LLMResponseMessage` 컴포넌트
 
 ### API 라우트
 
 - **검색**: `app/api/ai/similaritySearch/route.tsx`
-- **AI 응답**: `app/api/ai/askLLM/[provider]/route.ts`
+- **AI 응답**: `app/api/ai/askLLM/openai/route.tsx`
 
 ### 로직
 
-- **채팅 프로세스**: `components/Chat/Root/Input/useChatProcess.tsx`
+- **채팅 프로세스**: `src/components/Chat/Root/Input/useChatProcess.tsx`
     - `getSimilarity()` 함수
     - `askLLM()` 함수
 
 ### 타입 정의
 
-- **전역 상태**: `jotai.ts`
+- **전역 상태**: `src/lib/jotai.ts`
     - `similarityResponse` 타입
     - `contextMessage` 타입
 

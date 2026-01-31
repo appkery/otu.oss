@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
                     withdrawLogger('Uploadcare 파일 삭제 완료');
                 } catch (deleteError) {
                     withdrawLogger('Uploadcare 파일 삭제 실패:', deleteError);
-                    console.error('Withdraw error:',deleteError); // Uploadcare 파일 삭제 실패를 Sentry에 로깅
+                    console.error('Withdraw error:', deleteError); // Uploadcare 파일 삭제 실패를 Sentry에 로깅
                     // 파일 삭제 실패가 전체 탈퇴 프로세스를 막지 않도록 에러를 다시 throw하지 않음
                 }
             }
@@ -449,12 +449,12 @@ export async function POST(req: NextRequest) {
             }
         } catch (checkError) {
             withdrawLogger('데이터 확인 중 에러:', checkError);
-            console.error('Withdraw error:',checkError);
+            console.error('Withdraw error:', checkError);
         }
     } catch (e) {
         withdrawLogger('=== 탈퇴 프로세스 에러 발생 ===');
         withdrawLogger('에러 상세:', e);
-        console.error('Withdraw error:',e); // 에러 로깅
+        console.error('Withdraw error:', e); // 에러 로깅
         return errorResponse(
             {
                 status: 500,

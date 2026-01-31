@@ -1,6 +1,6 @@
 # 테마 메커니즘 (gray/white/black)
 
-- 상태: `jotai.ts`의 `themeModeState`에 `'gray' | 'white' | 'black'` 저장
+- 상태: `src/lib/jotai.ts`의 `themeModeState`에 `'gray' | 'white' | 'black'` 저장
 - HTML 클래스: `app/RootLayoutProvider.tsx`에서 `<html class="[themeMode]">` 적용
 - CSS 변수: `app/globals.css`에서 테마별로 `--bg-color`, `--text-color` 등에 매핑
 - 하위 호환성: `html.light` → gray 매핑, `html.dark` → black 매핑
@@ -21,12 +21,12 @@
 - 구현 위치:
     - `app/RootLayoutProvider.tsx`의 `initializeTheme` effect: 초기화
     - `app/RootLayoutProvider.tsx`의 `trackSystemThemeChanges` effect: 시스템 테마 실시간 추적
-    - `components/layout/LoginedMenu.tsx`의 `applyTheme` 함수: 테마 저장 (atomWithStorage 자동 저장)
+    - `src/components/layout/LoginedMenu.tsx`의 `applyTheme` 함수: 테마 저장 (atomWithStorage 자동 저장)
 
 테마 전환 플로우:
 
 1. 사용자가 프로필 메뉴에서 테마 항목 클릭
-2. `components/layout/LoginedMenu.tsx`에서 테마 순환: gray → white → black → gray
+2. `src/components/layout/LoginedMenu.tsx`에서 테마 순환: gray → white → black → gray
 3. `themeModeState` 업데이트 (localStorage에 자동 저장됨)
 4. Root effect가 `<html>` 클래스 업데이트, CSS 변수가 즉시 색상 반영
 5. WebViewCommunicator가 네이티브에 알림

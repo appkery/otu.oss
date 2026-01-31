@@ -2,7 +2,7 @@
 
 > WatermelonDB 기반 오프라인 우선 동기화 시스템
 
-**위치**: `watermelondb/sync.ts`
+**위치**: `src/watermelondb/sync.ts`
 
 ## 개요
 
@@ -144,12 +144,19 @@
 
 ## API 엔드포인트
 
-### `/api/sync`
+### `/api/sync/pull`
 
 - **메서드**: POST
-- **역할**: Pull + Push 통합 처리
-- **요청**: `lastPulledAt`, `changes` (push 데이터)
+- **역할**: 서버에서 변경사항 가져오기
+- **요청**: `lastPulledAt`
 - **응답**: `changes` (pull 데이터), `timestamp`
+
+### `/api/sync/push`
+
+- **메서드**: POST
+- **역할**: 로컬 변경사항 서버에 업로드
+- **요청**: `changes` (created/updated/deleted)
+- **응답**: 성공/실패 상태
 
 ## 트러블슈팅
 
@@ -187,9 +194,10 @@ localStorage.debug = 'sync'
 
 ## 주요 파일
 
-- `watermelondb/sync.ts` - 동기화 메인 로직
-- `functions/hooks/useSync.tsx` - React 훅
-- `app/api/sync/route.ts` - 서버 엔드포인트
+- `src/watermelondb/sync.ts` - 동기화 메인 로직
+- `src/functions/hooks/useSync.tsx` - React 훅
+- `app/api/sync/pull/route.ts` - Pull 엔드포인트
+- `app/api/sync/push/route.ts` - Push 엔드포인트
 
 ## 관련 문서
 

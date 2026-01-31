@@ -113,15 +113,15 @@ npm run dev
 
 | 카테고리          | 기술 스택                                         |
 | ----------------- | ------------------------------------------------- |
-| **프론트엔드**    | Next.js 15, React 19, TypeScript 5.7              |
+| **프론트엔드**    | Next.js 16, React 19, TypeScript 5.7              |
 | **데이터베이스**  | Supabase (PostgreSQL), WatermelonDB               |
 | **상태 관리**     | Jotai, React Query                                |
 | **UI 라이브러리** | Material-UI, Tailwind CSS                         |
-| **에디터**        | BlockNote 0.41.1 + XL-AI 확장                     |
+| **에디터**        | BlockNote 0.44.0 + XL-AI 확장                     |
 | **AI 서비스**     | OpenAI GPT-4o, Vercel AI Gateway                  |
 | **라우팅**        | React Router DOM (클라이언트), Next.js App Router |
 | **테스트**        | Jest (⚠️ Vitest 사용 안함!)                       |
-| **모니터링**      | Sentry                                            |
+| **모니터링**      | Vercel Logs, Console Logging                      |
 
 ### 환경 변수 설정
 
@@ -158,11 +158,6 @@ OPENAI_API_KEY=your_openai_api_key
 #### 선택 환경 변수
 
 ```bash
-# Sentry (에러 모니터링)
-NEXT_PUBLIC_SENTRY_DSN=your_sentry_dsn
-SENTRY_AUTH_TOKEN=your_sentry_token
-NEXT_PUBLIC_ENABLE_SENTRY=false # Sentry 활성화 여부 (true: 활성화, false: 비활성화)
-
 # Uploadcare (이미지 업로드)
 NEXT_PUBLIC_UPLOADCARE_PUBLIC_KEY=your_uploadcare_key
 
@@ -276,7 +271,7 @@ localStorage.debug = 'sync,editor,chat'
 - `editor` - 에디터 관련
 - `chat` - AI 채팅
 - `auth` - 인증
-- 기타: `debug/` 디렉토리 참고
+- 기타: `src/debug/` 디렉토리 참고
 
 #### 모바일 디버깅
 
@@ -305,28 +300,30 @@ localStorage.debug = 'sync,editor,chat'
 │   │   └── ...
 │   └── auth/              # 인증 관련
 │
-├── components/              # React 컴포넌트
-│   ├── Chat/              # AI 채팅
-│   ├── common/            # 공유 컴포넌트
-│   ├── home2/             # 홈 (React Router 기반)
-│   ├── layout/            # 레이아웃
-│   └── ...
-│
-├── functions/              # 유틸리티 함수
-│   ├── ai/               # AI 서비스
-│   ├── hooks/            # 커스텀 훅
-│   └── usage/            # 사용량 추적
-│
-├── watermelondb/           # 로컬 DB (오프라인 지원)
-│   ├── model/            # 모델 정의
-│   ├── control/          # DB 제어 로직
-│   ├── schema.ts         # 스키마
-│   ├── sync.ts           # 동기화 로직 (40KB+)
-│   └── migrations.ts     # 마이그레이션
+├── src/
+│   ├── components/        # React 컴포넌트
+│   │   ├── Chat/         # AI 채팅
+│   │   ├── common/       # 공유 컴포넌트
+│   │   ├── home2/        # 홈 (React Router 기반)
+│   │   ├── layout/       # 레이아웃
+│   │   └── ...
+│   │
+│   ├── functions/         # 유틸리티 함수
+│   │   ├── ai/           # AI 서비스
+│   │   ├── hooks/        # 커스텀 훅
+│   │   └── usage/        # 사용량 추적
+│   │
+│   ├── watermelondb/      # 로컬 DB (오프라인 지원)
+│   │   ├── model/        # 모델 정의
+│   │   ├── control/      # DB 제어 로직
+│   │   ├── schema.ts     # 스키마
+│   │   ├── sync.ts       # 동기화 로직 (40KB+)
+│   │   └── migrations.ts # 마이그레이션
+│   │
+│   └── debug/             # 디버그 로거들
 │
 ├── supabase/              # Supabase 설정
 │   ├── migrations/       # DB 마이그레이션
-│   ├── functions/        # Edge Functions
 │   └── ...
 │
 └── messages/              # 다국어 지원
@@ -389,7 +386,7 @@ localStorage.debug = 'sync,editor,chat'
 #### 3. AI 통합
 
 ```
-BlockNote 0.41.1 Editor
+BlockNote 0.44.0 Editor
     ↓
   XL-AI Extension
     ↓
@@ -552,15 +549,10 @@ const t = await getTranslations('namespace');
 #### 4. 에러 처리
 
 ```typescript
-import { captureException } from '@sentry/nextjs';
-
 try {
     await someAsyncOperation();
 } catch (error) {
-    captureException(error, {
-        level: 'error',
-        tags: { type: 'api' },
-    });
+    console.error('Operation error:', error);
 }
 ```
 
@@ -739,7 +731,7 @@ import { POST } from './route';
 
 #### 주요 기능
 
-- **AI 통합**: BlockNote 0.41.1 XL-AI 확장을 통한 AI 기능
+- **AI 통합**: BlockNote 0.44.0 XL-AI 확장을 통한 AI 기능
     - AI 포맷팅 툴바
     - AI 슬래시 메뉴
     - Vercel AI Gateway를 통한 OpenAI GPT-4o 호출

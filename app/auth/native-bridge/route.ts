@@ -21,7 +21,7 @@ export async function POST(request: Request) {
         authLogger('native-bridge:setSession', { ok: !error, user: data?.user?.id });
 
         if (error) {
-            console.error('Native bridge error:',error);
+            console.error('Native bridge error:', error);
             return NextResponse.json({ ok: false, error: error.message }, { status: 400 });
         }
 
@@ -36,13 +36,13 @@ export async function POST(request: Request) {
             // const cookieStore = await cookies();
             // 쿠키 설정 로직 제거됨
         } catch (cookieErr) {
-            console.error('Native bridge error:',cookieErr);
+            console.error('Native bridge error:', cookieErr);
             authLogger('native-bridge:failed to set cookies', cookieErr);
         }
 
         return new NextResponse(null, { status: 204 });
     } catch (e: any) {
-        console.error('Native bridge error:',e);
+        console.error('Native bridge error:', e);
         return NextResponse.json({ ok: false, error: e?.message || 'unknown' }, { status: 500 });
     }
 }

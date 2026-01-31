@@ -106,7 +106,7 @@ export default function useCheckWatermelondb() {
                 message: _t('storageError'),
                 yesLabel: _t('confirm'),
             } as ConfirmOptions);
-            console.error('WatermelonDB check error:',error);
+            console.error('WatermelonDB check error:', error);
             return false;
         }
 

@@ -46,7 +46,7 @@ export async function createEmbeddingUsingCohere(text, input_type = 'search_quer
     } catch (e) {
         console.error(e);
         const errorText = `Embedding API 오류: ${e.message}`;
-        console.error('AI error:',new Error(errorText), {
+        console.error('AI error:', new Error(errorText), {
             tags: {
                 api: 'embedding',
                 provider: process.env.NODE_ENV === 'development' ? 'openai' : 'gateway',
@@ -119,7 +119,7 @@ export async function fetchTitling(id, body) {
 
                     // 실제 JSON 파싱 실패는 서버 오류로 처리
                     console.error('HTTP 429 응답의 JSON 파싱 실패:', parseError);
-                    console.error('AI error:',parseError, {
+                    console.error('AI error:', parseError, {
                         tags: {
                             api: 'titling',
                             status: 429,
@@ -138,7 +138,7 @@ export async function fetchTitling(id, body) {
 
             // 기타 HTTP 에러 처리
             const errorText = `Titling API 응답 오류: ${response.status} ${response.statusText}`;
-            console.error('AI error:',new Error(errorText), {
+            console.error('AI error:', new Error(errorText), {
                 tags: {
                     api: 'titling',
                     status: response.status,
@@ -162,7 +162,7 @@ export async function fetchTitling(id, body) {
 
         // 이미 처리되지 않은 에러는 Sentry로 보고
         if (!e.message || !e.message.includes('Titling API 응답 오류')) {
-            console.error('AI error:',e, {
+            console.error('AI error:', e, {
                 tags: {
                     api: 'titling',
                 },

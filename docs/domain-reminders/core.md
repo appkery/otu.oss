@@ -140,7 +140,7 @@ private async releaseProcessingLock(pageId: string): Promise<void> {
 
 - **네임스페이스**: `alarm`
 - **활성화**: `localStorage.debug = 'alarm'` (클라이언트) 또는 `DEBUG='alarm'` (서버)
-- **로거 함수**: `alarmLogger` (`@/debug/alarm`)
+- **로거 함수**: `alarmLogger` (`src/debug/alarm`)
 
 ### Sentry 보고
 

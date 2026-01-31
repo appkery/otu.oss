@@ -73,14 +73,14 @@ Issue #1085의 HTTP 429 에러 처리는 다음과 같이 수동으로 테스트
 
 1. **Unit 테스트**
 
-    - `test/usage-quota-check.test.ts` - 서버 코드 검증 (14개)
+    - `src/test/usage-quota-check.test.ts` - 서버 코드 검증 (14개)
 
 2. **API Mock 테스트**
 
-    - `test/http-429-error-handling.test.ts` - 클라이언트 에러 처리 (9개)
+    - `src/test/http-429-error-handling.test.ts` - 클라이언트 에러 처리 (9개)
 
 3. **통합 테스트**
-    - `test/api-integration-429-handling.test.ts` - 전체 플로우 검증 (12개)
+    - `src/test/api-integration-429-handling.test.ts` - 전체 플로우 검증 (12개)
 
 ### 체크리스트
 
