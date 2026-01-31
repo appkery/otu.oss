@@ -1,11 +1,17 @@
-/*
-1. migrations.ts에 마이그레이션을 정의한다. 
-2. schema.ts에 스키마를 정의한다.
-3. schmma.ts의 version을 1 증가 시킨다.
-*/
+/**
+ * WatermelonDB 스키마 정의
+ *
+ * 스키마 변경 방법:
+ * 1. migrations.ts에 새 마이그레이션 정의
+ * 2. 이 파일의 테이블 스키마 수정
+ * 3. version을 1 증가
+ *
+ * @see https://watermelondb.dev/docs/Schema
+ */
 import { appSchema, tableSchema } from '@nozbe/watermelondb';
+
 export const schema = appSchema({
-    version: 6,
+    version: 1,
     tables: [
         tableSchema({
             name: 'page',

@@ -1,25 +1,24 @@
-// https://watermelondb.dev/docs/Advanced/Migrations
-import { addColumns, createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
+/**
+ * WatermelonDB 마이그레이션 파일
+ *
+ * 오픈소스 버전은 신규 설치 기준이므로 단일 마이그레이션으로 통합되어 있습니다.
+ * 스키마 버전 1로 시작하여 모든 테이블을 한 번에 생성합니다.
+ *
+ * 마이그레이션 추가 방법:
+ * 1. schema.ts의 version을 1 증가
+ * 2. 이 파일의 migrations 배열에 새 마이그레이션 객체 추가
+ *
+ * @see https://watermelondb.dev/docs/Advanced/Migrations
+ */
+import { createTable, schemaMigrations } from '@nozbe/watermelondb/Schema/migrations';
+
 export default schemaMigrations({
     migrations: [
         {
-            toVersion: 2,
+            // 최초 스키마: 모든 테이블 생성
+            toVersion: 1,
             steps: [
-                createTable({
-                    name: 'page_offline',
-                    columns: [
-                        { name: 'title', type: 'string', isOptional: true },
-                        { name: 'body', type: 'string', isOptional: true },
-                        { name: 'is_public', type: 'boolean', isOptional: true },
-                        { name: 'child_count', type: 'number', isOptional: true },
-                        { name: 'parent_count', type: 'number', isOptional: true },
-                        { name: 'last_viewed_at', type: 'number', isOptional: true },
-                        { name: 'img_url', type: 'string', isOptional: true },
-                        { name: 'length', type: 'number', isOptional: true },
-                        { name: 'created_at', type: 'number' },
-                        { name: 'updated_at', type: 'number' },
-                    ],
-                }),
+                // page 테이블
                 createTable({
                     name: 'page',
                     columns: [
@@ -33,50 +32,12 @@ export default schemaMigrations({
                         { name: 'length', type: 'number', isOptional: true },
                         { name: 'created_at', type: 'number' },
                         { name: 'updated_at', type: 'number' },
-                    ],
-                }),
-            ],
-        },
-        {
-            toVersion: 3,
-            steps: [
-                addColumns({
-                    table: 'page',
-                    columns: [
                         { name: 'user_id', type: 'string' },
                         { name: 'type', type: 'string' },
+                        { name: 'folder_id', type: 'string', isOptional: true },
                     ],
                 }),
-                addColumns({
-                    table: 'page_offline',
-                    columns: [
-                        { name: 'user_id', type: 'string' },
-                        { name: 'type', type: 'string' },
-                    ],
-                }),
-            ],
-        },
-        // 테이블 삭제에 관한 마이그레이션
-        // WatermelonDB는 테이블을 삭제하는 직접적인 마이그레이션 기능을 제공하지 않습니다.
-        // 테이블을 삭제하기 위한 적절한 방법은 다음과 같습니다:
-        // 1. 스키마 파일(schema.ts)에서 테이블 정의를 제거
-        // 2. 스키마 버전을 증가
-        // 3. 마이그레이션 파일에 해당 버전에 대한 빈 마이그레이션 추가
-        //
-        // SQLite 어댑터를 사용하는 경우 아래와 같이 unsafeExecuteSql을 사용하여 직접 DROP TABLE
-        // 명령을 실행할 수도 있지만, LokiJS 어댑터(현재 사용 중)에서는 작동하지 않습니다:
-        // import { unsafeExecuteSql } from '@nozbe/watermelondb/Schema/migrations'
-        // steps: [
-        //   unsafeExecuteSql('DROP TABLE IF EXISTS backup_page;')
-        // ]
-        {
-            toVersion: 4,
-            steps: [], // backup_page 테이블이 schema.ts에서 제거되었으므로 빈 마이그레이션으로 처리
-        },
-        {
-            toVersion: 5,
-            steps: [
-                // folder 테이블 생성
+                // folder 테이블
                 createTable({
                     name: 'folder',
                     columns: [
@@ -90,32 +51,15 @@ export default schemaMigrations({
                         { name: 'user_id', type: 'string' },
                     ],
                 }),
-                // page 테이블에 folder_id 컬럼 추가
-                addColumns({
-                    table: 'page',
-                    columns: [{ name: 'folder_id', type: 'string', isOptional: true }],
-                }),
-                // page_offline 테이블에 folder_id 컬럼 추가
-                addColumns({
-                    table: 'page_offline',
-                    columns: [{ name: 'folder_id', type: 'string', isOptional: true }],
-                }),
-            ],
-        },
-        {
-            toVersion: 6,
-            steps: [
-                // alarm 테이블 생성
+                // alarm 테이블
                 createTable({
                     name: 'alarm',
                     columns: [
                         { name: 'user_id', type: 'string' },
                         { name: 'page_id', type: 'string' },
-                        { name: 'content', type: 'string', isOptional: true },
-                        { name: 'next_alarm_time', type: 'number' },
+                        { name: 'next_alarm_time', type: 'number', isOptional: true },
                         { name: 'sent_count', type: 'number' },
                         { name: 'last_notification_id', type: 'string', isOptional: true },
-                        { name: 'processed_at', type: 'number', isOptional: true },
                         { name: 'created_at', type: 'number' },
                         { name: 'updated_at', type: 'number' },
                     ],
