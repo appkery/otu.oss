@@ -22,10 +22,17 @@ export function isOpenAIConfigured(): boolean {
 }
 
 /**
- * Cohere API 키가 설정되어 있는지 확인
+ * 임베딩 API가 설정되어 있는지 확인
+ * 개발 환경에서는 OpenAI API 키, 프로덕션에서는 Gateway 사용
+ * @deprecated COHERE_API_KEY는 더 이상 사용되지 않습니다. Vercel AI Gateway를 통해 임베딩을 사용합니다.
  */
 export function isCohereConfigured(): boolean {
-    return !!process.env.COHERE_API_KEY;
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    if (isDevelopment) {
+        return !!process.env.OPENAI_API_KEY;
+    }
+    // 프로덕션에서는 Gateway를 사용하므로 항상 true
+    return true;
 }
 
 /**
@@ -81,8 +88,9 @@ export function getEmbeddingsDisabledReason(): string {
         return 'AI_DISABLED';
     }
 
-    if (!isCohereConfigured()) {
-        return 'COHERE_API_KEY_NOT_SET';
+    const isDevelopment = process.env.NODE_ENV === 'development';
+    if (isDevelopment && !isOpenAIConfigured()) {
+        return 'OPENAI_API_KEY_NOT_SET';
     }
 
     return 'UNKNOWN';

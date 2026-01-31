@@ -57,7 +57,8 @@ export async function POST(req: Request) {
     }
 
     const match_documents_options = {
-        query_embedding: embedQuery,
+        // PostgreSQL 벡터 타입은 JSON 문자열로 전달해야 함
+        query_embedding: JSON.stringify(embedQuery),
         match_threshold: threshold,
         match_count: Math.min(10, count),
         input_page_id: page_id,

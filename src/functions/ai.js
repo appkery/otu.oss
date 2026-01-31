@@ -1,81 +1,62 @@
 // @ts-ignore
-import * as Sentry from '@sentry/nextjs';
+import { embed } from 'ai';
+// @ts-ignore
+import { gateway } from '@ai-sdk/gateway';
+// @ts-ignore
+import { createOpenAI } from '@ai-sdk/openai';
+// @ts-ignore
+import { EMBEDDING_MODEL_NAME } from './constants';
 
+/**
+ * Vercel AI Gateway를 사용하여 텍스트 임베딩을 생성합니다.
+ * 개발 환경에서는 OpenAI 직접 호출, 프로덕션에서는 Gateway 사용
+ *
+ * @param {string} text - 임베딩할 텍스트
+ * @param {string} input_type - 입력 타입 (호환성을 위해 유지, 실제로는 사용되지 않음)
+ * @returns {Promise<{embeddings: number[][], texts: string[], meta: {billed_units: {input_tokens: number}}}>}
+ */
 // @ts-ignore
 export async function createEmbeddingUsingCohere(text, input_type = 'search_query') {
     try {
-        const bodyContent = {
-            model: 'embed-multilingual-v3.0',
-            texts: [text],
-            truncate: 'NONE',
-            input_type: input_type,
-        };
+        const isDevelopment = process.env.NODE_ENV === 'development';
 
-        const response = await fetch('https://api.cohere.ai/v1/embed', {
-            headers: {
-                'content-type': 'application/json; charset=UTF-8',
-                authorization: `Bearer ${process.env.COHERE_API_KEY}`,
-            },
-            body: JSON.stringify(bodyContent),
-            method: 'POST',
-            mode: 'cors',
-            credentials: 'include',
+        // 개발 환경에서는 OpenAI 직접 사용, 프로덕션에서는 Gateway 사용
+        const embeddingModel = isDevelopment
+            ? createOpenAI({ apiKey: process.env.OPENAI_API_KEY }).textEmbeddingModel(
+                  'text-embedding-3-small'
+              )
+            : gateway.textEmbeddingModel(EMBEDDING_MODEL_NAME);
+
+        const result = await embed({
+            model: embeddingModel,
+            value: text,
         });
 
-        if (!response.ok) {
-            const errorText = `Cohere API 응답 오류: ${response.status} ${response.statusText}`;
-            Sentry.captureException(new Error(errorText), {
-                tags: {
-                    api: 'cohere',
-                    endpoint: 'embed',
-                    status: response.status,
+        // 기존 Cohere API 응답 형식과 호환되는 형태로 변환
+        // 호출하는 코드에서 result.embeddings[0], result.texts[0], result.meta.billed_units.input_tokens 형태로 사용
+        return {
+            embeddings: [result.embedding],
+            texts: [text],
+            meta: {
+                billed_units: {
+                    input_tokens: result.usage?.tokens || 0,
                 },
-                extra: {
-                    input_type,
-                    status: response.status,
-                    statusText: response.statusText,
-                },
-            });
-            throw new Error(errorText);
-        }
-
-        const data = await response.json();
-
-        if (!data) {
-            const errorText = 'Cohere API 응답 데이터가 없습니다.';
-            Sentry.captureException(new Error(errorText), {
-                tags: {
-                    api: 'cohere',
-                    endpoint: 'embed',
-                },
-                extra: {
-                    input_type,
-                },
-            });
-            throw new Error(errorText);
-        }
-
-        return data;
+            },
+        };
     } catch (e) {
         console.error(e);
-        // 이미 처리되지 않은 에러는 Sentry로 보고
-        if (
-            !e.message ||
-            (!e.message.includes('Cohere API 응답 오류') &&
-                !e.message.includes('Cohere API 응답 데이터가 없습니다'))
-        ) {
-            Sentry.captureException(e, {
-                tags: {
-                    api: 'cohere',
-                    endpoint: 'embed',
-                },
-                extra: {
-                    input_type,
-                    message: e.message,
-                },
-            });
-        }
-        throw e; // 에러를 다시 던져서 이 함수를 호출한 곳에서도 에러를 처리할 수 있게 합니다.
+        const errorText = `Embedding API 오류: ${e.message}`;
+        console.error('AI error:',new Error(errorText), {
+            tags: {
+                api: 'embedding',
+                provider: process.env.NODE_ENV === 'development' ? 'openai' : 'gateway',
+            },
+            extra: {
+                input_type,
+                message: e.message,
+            },
+        });
+        throw e;
     }
 }
 
@@ -138,7 +119,7 @@ export async function fetchTitling(id, body) {
 
                     // 실제 JSON 파싱 실패는 서버 오류로 처리
                     console.error('HTTP 429 응답의 JSON 파싱 실패:', parseError);
-                    Sentry.captureException(parseError, {
+                    console.error('AI error:',parseError, {
                         tags: {
                             api: 'titling',
                             status: 429,
@@ -157,7 +138,7 @@ export async function fetchTitling(id, body) {
 
             // 기타 HTTP 에러 처리
             const errorText = `Titling API 응답 오류: ${response.status} ${response.statusText}`;
-            Sentry.captureException(new Error(errorText), {
+            console.error('AI error:',new Error(errorText), {
                 tags: {
                     api: 'titling',
                     status: response.status,
@@ -181,7 +162,7 @@ export async function fetchTitling(id, body) {
 
         // 이미 처리되지 않은 에러는 Sentry로 보고
         if (!e.message || !e.message.includes('Titling API 응답 오류')) {
-            Sentry.captureException(e, {
+            console.error('AI error:',e, {
                 tags: {
                     api: 'titling',
                 },
