@@ -86,6 +86,11 @@ export const TEXT_MODEL_NAME = 'google/gemini-2.5-flash';
 // https://ai-gateway.vercel.sh/v1/models 에서 모델을 찾아서 input, output 토큰의 가격을 기록합니다.
 export const TEXT_MODEL_INPUT_PRICE_PER_TOKEN = 0.0000003;
 export const TEXT_MODEL_OUTPUT_PRICE_PER_TOKEN = 0.0000025;
+
+// 임베딩 모델 설정
+// Vercel AI Gateway에서 지원하는 임베딩 모델 사용
+// 개발 환경에서는 OpenAI text-embedding-3-small 직접 사용
+export const EMBEDDING_MODEL_NAME = 'cohere/embed-v4.0';
 export const TEXT_INPUT_MODEL_TYPE_ID = 17;
 export const TEXT_OUTPUT_MODEL_TYPE_ID = 18;
 export const UPLOADCARE_TYPE_ID = 23;

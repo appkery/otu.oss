@@ -1,7 +1,6 @@
 import { SyncPullArgs, synchronize } from '@nozbe/watermelondb/sync';
 import { database } from './index';
 import { syncLogger } from '@/debug/sync';
-import * as Sentry from '@sentry/nextjs';
 import { Model } from '@nozbe/watermelondb';
 import { Q } from '@nozbe/watermelondb';
 
@@ -163,7 +162,7 @@ async function performSync(
             }
             if (onProgress) onProgress({ name: 'push_end', isInitialSync });
             syncLogger('pushChanges result', changes, lastPulledAt);
-            Sentry.addBreadcrumb({
+            syncLogger('breadcrumb:', {
                 category: 'sync',
                 message: `pushChanges end`,
                 level: 'info',
@@ -181,7 +180,7 @@ async function performSync(
         totalCount: pullCount + pushCount,
         startPulledAt,
     };
-    Sentry.addBreadcrumb({
+    syncLogger('breadcrumb:', {
         category: 'sync',
         message: `pullChangesForSync end`,
         level: 'info',
@@ -193,7 +192,7 @@ async function performSync(
 }
 
 async function pullChangesForSync({ lastPulledAt, schemaVersion, migration }: SyncPullArgs) {
-    Sentry.addBreadcrumb({
+    syncLogger('breadcrumb:', {
         category: 'sync',
         message: `pullChangesForSync start`,
         level: 'info',
@@ -280,7 +279,7 @@ async function pullChangesForSync({ lastPulledAt, schemaVersion, migration }: Sy
         startPulledAt: lastPulledAt,
     };
     syncLogger('pullChangesForSync result', result);
-    Sentry.addBreadcrumb({
+    syncLogger('breadcrumb:', {
         category: 'sync',
         message: `pullChangesForSync end`,
         level: 'info',
@@ -296,7 +295,7 @@ export async function pullChangesForInitialSync(
     // 전체 시간 측정 시작
     const totalStartTime = performance.now();
 
-    Sentry.addBreadcrumb({
+    syncLogger('breadcrumb:', {
         category: 'sync',
         message: 'pullChangesForInitialSync start',
         level: 'info',
@@ -838,15 +837,12 @@ export async function pullChangesForInitialSync(
                 }
             } catch (error) {
                 // 오류 처리
-                Sentry.captureException(error, {
-                    tags: { type: 'sync' },
-                    extra: {
-                        comment: '최초 동기화 중 오류 발생',
-                        batchSize: pages.length,
-                        foldersSize: folders.length,
-                        alarmsSize: alarms.length,
-                        shouldSkipDuplicateCheck,
-                    },
+                console.error('Sync error:', error, {
+                    comment: '최초 동기화 중 오류 발생',
+                    batchSize: pages.length,
+                    foldersSize: folders.length,
+                    alarmsSize: alarms.length,
+                    shouldSkipDuplicateCheck,
                 });
                 syncLogger('pullChangesForInitialSync error during batch operation', error);
             }
@@ -958,7 +954,7 @@ export async function pullChangesForInitialSync(
 
     syncLogger('pullChangesForInitialSync result', result);
     onProgress('');
-    Sentry.addBreadcrumb({
+    syncLogger('breadcrumb:', {
         category: 'sync',
         message: 'pullChangesForInitialSync end',
         level: 'info',
