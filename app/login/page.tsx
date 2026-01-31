@@ -11,14 +11,6 @@ import { SESSION_USER_ID_FOR_CHECK_SYNC } from '@/functions/constants';
 import { handleNewUserSetupAction } from './actions';
 
 export default function Login() {
-    // 이메일 로그인 활성화 여부를 환경변수로 제어
-    const emailLoginEnabled =
-        process.env.NEXT_PUBLIC_ENABLE_EMAIL_LOGIN === 'true' ||
-        process.env.NODE_ENV === 'development';
-
-    if (!emailLoginEnabled) {
-        return <>"This route is only available when email login is enabled."</>;
-    }
     const isDev = process.env.NODE_ENV === 'development';
     const [email, setEmail] = useState(isDev ? 'test@opentutorials.org' : '');
     const [password, setPassword] = useState(isDev ? '111111' : '');
