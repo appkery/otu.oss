@@ -1,4 +1,4 @@
-import { Database } from '@/database.types';
+import { Database } from '@/lib/database/types';
 import { createBrowserClient } from '@supabase/ssr';
 import { createServerClient } from '@supabase/ssr';
 import * as Sentry from '@sentry/nextjs';

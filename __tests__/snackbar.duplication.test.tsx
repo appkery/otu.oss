@@ -39,7 +39,7 @@ describe('Snackbar 중복 렌더링 방지', () => {
         // Given: GlobalUI 소스 코드
         const fs = require('fs');
         const path = require('path');
-        const globalUIPath = path.join(process.cwd(), 'components/core/GlobalUI.tsx');
+        const globalUIPath = path.join(process.cwd(), 'src/components/core/GlobalUI.tsx');
         const content = fs.readFileSync(globalUIPath, 'utf-8');
 
         testLogger('GlobalUI.tsx 내용 확인');
@@ -73,7 +73,7 @@ describe('Snackbar 중복 렌더링 방지', () => {
         // Given: Snackbar 컴포넌트 소스 코드
         const fs = require('fs');
         const path = require('path');
-        const snackbarPath = path.join(process.cwd(), 'components/common/Snackbar/index.tsx');
+        const snackbarPath = path.join(process.cwd(), 'src/components/common/Snackbar/index.tsx');
         const content = fs.readFileSync(snackbarPath, 'utf-8');
 
         testLogger('Snackbar/index.tsx 내용 확인');
@@ -101,7 +101,7 @@ describe('Snackbar 아키텍처 검증', () => {
         const rootLayoutContent = fs.readFileSync(rootLayoutPath, 'utf-8');
 
         // GlobalUI: 전역 UI 요소 담당 (Snackbar, ConfirmDialog 등)
-        const globalUIPath = path.join(process.cwd(), 'components/core/GlobalUI.tsx');
+        const globalUIPath = path.join(process.cwd(), 'src/components/core/GlobalUI.tsx');
         const globalUIContent = fs.readFileSync(globalUIPath, 'utf-8');
 
         // Then: 책임 분리 확인

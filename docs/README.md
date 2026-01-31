@@ -4,27 +4,27 @@
 
 ## 필수 문서
 
-| 문서 | 설명 |
-|------|------|
-| [CLAUDE.md](../CLAUDE.md) ⭐ | 프로젝트 규칙, 아키텍처, 코딩 스타일 |
-| [기능 명세](./meta-guides/functionality.md) ⭐ | 전체 기능 목록 |
-| [설치 가이드](./installation.md) | 개발 환경 설정 |
+| 문서                                           | 설명                                 |
+| ---------------------------------------------- | ------------------------------------ |
+| [CLAUDE.md](../CLAUDE.md) ⭐                   | 프로젝트 규칙, 아키텍처, 코딩 스타일 |
+| [기능 명세](./meta-guides/functionality.md) ⭐ | 전체 기능 목록                       |
+| [설치 가이드](./installation.md)               | 개발 환경 설정                       |
 
 ## 핵심 메커니즘
 
-| 문서 | 설명 |
-|------|------|
-| [데이터 동기화](./core-data/sync.md) | WatermelonDB ↔ Supabase |
-| [폴더 시스템](./core-data/folders.md) | 페이지 그룹핑 |
-| [테마](./core-ui/theme.md) | gray/white/black 테마 |
+| 문서                                  | 설명                     |
+| ------------------------------------- | ------------------------ |
+| [데이터 동기화](./core-data/sync.md)  | WatermelonDB ↔ Supabase |
+| [폴더 시스템](./core-data/folders.md) | 페이지 그룹핑            |
+| [테마](./core-ui/theme.md)            | gray/white/black 테마    |
 
 ## 기능별 문서
 
-| 문서 | 설명 |
-|------|------|
+| 문서                                            | 설명               |
+| ----------------------------------------------- | ------------------ |
 | [에디터 자동저장](./feature-editor/autosave.md) | BlockNote 자동저장 |
-| [AI 채팅](./feature-chat/rag-modes.md) | RAG 모드 |
-| [리마인더](./domain-reminders/core.md) | 알람 시스템 |
+| [AI 채팅](./feature-chat/rag-modes.md)          | RAG 모드           |
+| [리마인더](./domain-reminders/core.md)          | 알람 시스템        |
 
 ## 기타
 

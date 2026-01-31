@@ -15,7 +15,7 @@ import * as path from 'path';
 
 describe('PR #1223 - userType 제거 검증', () => {
     test('types.ts에 userType, ANONYMOUS, NAMED가 없어야 함', () => {
-        const typesPath = path.join(process.cwd(), 'types.ts');
+        const typesPath = path.join(process.cwd(), 'src/types/index.ts');
         const content = fs.readFileSync(typesPath, 'utf-8');
 
         expect(content).not.toMatch(/export type userType/);
@@ -24,12 +24,12 @@ describe('PR #1223 - userType 제거 검증', () => {
     });
 
     test('getUserType.ts 파일이 존재하지 않아야 함', () => {
-        const filePath = path.join(process.cwd(), 'functions/getUserType.ts');
+        const filePath = path.join(process.cwd(), 'src/functions/getUserType.ts');
         expect(fs.existsSync(filePath)).toBe(false);
     });
 
     test('PageOffline.ts 모델 파일이 존재하지 않아야 함', () => {
-        const filePath = path.join(process.cwd(), 'watermelondb/model/PageOffline.ts');
+        const filePath = path.join(process.cwd(), 'src/watermelondb/model/PageOffline.ts');
         expect(fs.existsSync(filePath)).toBe(false);
     });
 
@@ -42,7 +42,7 @@ describe('PR #1223 - userType 제거 검증', () => {
     });
 
     test('스키마에 page_offline 테이블이 없어야 함', () => {
-        const schemaPath = path.join(process.cwd(), 'watermelondb/schema.ts');
+        const schemaPath = path.join(process.cwd(), 'src/watermelondb/schema.ts');
         const content = fs.readFileSync(schemaPath, 'utf-8');
 
         // tableSchema 정의에서 page_offline이 없어야 함
@@ -50,7 +50,7 @@ describe('PR #1223 - userType 제거 검증', () => {
     });
 
     test('WatermelonDB index에서 PageOffline 모델이 제거되어야 함', () => {
-        const indexPath = path.join(process.cwd(), 'watermelondb/index.ts');
+        const indexPath = path.join(process.cwd(), 'src/watermelondb/index.ts');
         const content = fs.readFileSync(indexPath, 'utf-8');
 
         expect(content).not.toMatch(/import.*PageOffline/);
@@ -94,7 +94,7 @@ describe('PR #1223 - 잔존 참조 검증', () => {
     };
 
     test('loginMode 함수가 소스 코드에서 사용되지 않아야 함', () => {
-        const srcDirs = ['components', 'functions', 'app', 'watermelondb'];
+        const srcDirs = ['src/components', 'src/functions', 'app', 'src/watermelondb'];
         const allMatches: string[] = [];
 
         srcDirs.forEach((dir) => {
@@ -107,7 +107,7 @@ describe('PR #1223 - 잔존 참조 검증', () => {
     });
 
     test('getUserType 함수가 소스 코드에서 import되지 않아야 함', () => {
-        const srcDirs = ['components', 'functions', 'app', 'watermelondb'];
+        const srcDirs = ['src/components', 'src/functions', 'app', 'src/watermelondb'];
         const allMatches: string[] = [];
 
         srcDirs.forEach((dir) => {
@@ -120,7 +120,7 @@ describe('PR #1223 - 잔존 참조 검증', () => {
     });
 
     test('ANONYMOUS, NAMED 상수가 소스 코드에서 import되지 않아야 함', () => {
-        const srcDirs = ['components', 'functions', 'app', 'watermelondb'];
+        const srcDirs = ['src/components', 'src/functions', 'app', 'src/watermelondb'];
         const allMatches: string[] = [];
 
         srcDirs.forEach((dir) => {
@@ -139,7 +139,7 @@ describe('PR #1223 - 잔존 참조 검증', () => {
 
 describe('PR #1223 - 동기화 시스템 검증', () => {
     test('sync.ts에서 userType 관련 코드가 없어야 함', () => {
-        const syncPath = path.join(process.cwd(), 'watermelondb/sync.ts');
+        const syncPath = path.join(process.cwd(), 'src/watermelondb/sync.ts');
         const content = fs.readFileSync(syncPath, 'utf-8');
 
         expect(content).not.toMatch(/userType/);
@@ -148,7 +148,7 @@ describe('PR #1223 - 동기화 시스템 검증', () => {
     });
 
     test('Page Control에서 isOnlineUser 매개변수가 없어야 함', () => {
-        const pagePath = path.join(process.cwd(), 'watermelondb/control/Page.ts');
+        const pagePath = path.join(process.cwd(), 'src/watermelondb/control/Page.ts');
         const content = fs.readFileSync(pagePath, 'utf-8');
 
         // isOnlineUser 매개변수가 함수 시그니처에 없어야 함
@@ -156,7 +156,7 @@ describe('PR #1223 - 동기화 시스템 검증', () => {
     });
 
     test('useSync 훅에서 userType 관련 코드가 없어야 함', () => {
-        const useSyncPath = path.join(process.cwd(), 'functions/hooks/useSync.tsx');
+        const useSyncPath = path.join(process.cwd(), 'src/functions/hooks/useSync.tsx');
         const content = fs.readFileSync(useSyncPath, 'utf-8');
 
         expect(content).not.toMatch(/getUserType/);
